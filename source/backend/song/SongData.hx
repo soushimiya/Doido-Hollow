@@ -179,7 +179,7 @@ class SongData
 		var formatPath = 'events-$diff';
 
 		function checkFile():Bool {
-			return Paths.fileExists('songs/chart/$jsonInput/$formatPath.json');
+			return Paths.fileExists('songs/$jsonInput/chart/$formatPath.json');
 		}
 		if(!checkFile())
 			formatPath = 'events';
@@ -188,9 +188,9 @@ class SongData
 			return {songEvents: []};
 		}
 
-		Logs.print('Events Loaded: ' + '$jsonInput/$formatPath');
+		Logs.print('Events Loaded: ' + '$jsonInput/chart/$formatPath');
 
-		var daEvents:EventSong = cast Paths.json('songs/chart/$jsonInput/$formatPath');
+		var daEvents:EventSong = cast Paths.json('songs/$jsonInput/chart/$formatPath');
 		return daEvents;
 	}
 }
