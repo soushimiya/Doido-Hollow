@@ -49,23 +49,10 @@ class CharacterUtil
 	public static function charList():Array<String>
 	{
 		return [
-			"face",
 			"dad",
 			"gf",
 			"bf",
-			"bf-dead",
-			"bf-pixel",
-			"bf-pixel-dead",
-			"gf-pixel",
-			"spooky",
-			"spooky-player",
-			"luano-day",
-			"luano-night",
-			"senpai",
-			"senpai-angry",
-			"spirit",
-			"gemamugen",
-			"zero"
+			"bf-dead"
 		];
 	}
 }

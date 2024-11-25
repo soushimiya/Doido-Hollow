@@ -72,17 +72,8 @@ class HealthIcon extends FlxSprite
 			"face" 		=> 0xFFA1A1A1,
 			"bf" 		=> 0xFF31B0D1,
 			"bf-old"	=> 0xFFE9FF48,
-			"bf-cool"	=> 0xFF5FB6F1,
 			"gf"		=> 0xFFA5004D,
 			"dad"		=> 0xFFAF66CE,
-			"pico"		=> 0xFFB7D855,
-			"spooky"	=> 0xFFD57E00,
-			"luano"		=> 0xFFFFC03F,
-			"luano-night"=>0xFFB5A5F0,
-			// pixel guys
-			"bf-pixel"	=> 0xFF7BD6F6,
-			"senpai"	=> 0xFFFFAA6F,
-			"spirit"	=> 0xFFFF3C6E,
 		];
 
 		function loopMap()

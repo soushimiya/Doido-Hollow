@@ -6,11 +6,10 @@ import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.sound.FlxSound;
-import lime.utils.Assets;
+import openfl.utils.Assets;
 import openfl.display.BitmapData;
 import openfl.media.Sound;
 import states.PlayState;
-import tjson.TJSON;
 
 using StringTools;
 
@@ -47,7 +46,7 @@ class Paths
 	}
 	
 	public static function fileExists(filePath:String, ?library:String):Bool
-		return openfl.Assets.exists(getPath(filePath, library));
+		return Assets.exists(getPath(filePath, library));
 	
 	public static function getSound(key:String, ?library:String):Sound
 	{
@@ -59,7 +58,7 @@ class Paths
 			}
 			Logs.print('created new sound $key');
 			renderedSounds.set(key,
-				openfl.Assets.getSound(getPath('$key.ogg', library))
+				Assets.getSound(getPath('$key.ogg', library))
 			);
 		}
 		return renderedSounds.get(key);
@@ -73,7 +72,7 @@ class Paths
 		{
 			if(!renderedGraphics.exists(key))
 			{
-				var bitmap = openfl.Assets.getBitmapData(path);
+				var bitmap = Assets.getBitmapData(path);
 				
 				var newGraphic = FlxGraphic.fromBitmapData(bitmap, false, key, false);
 				Logs.print('created new image $key');
@@ -106,8 +105,8 @@ class Paths
 			clearCount.push(key);
 			
 			renderedGraphics.remove(key);
-			if(openfl.Assets.cache.hasBitmapData(key))
-				openfl.Assets.cache.removeBitmapData(key);
+			if(Assets.cache.hasBitmapData(key))
+				Assets.cache.removeBitmapData(key);
 			
 			FlxG.bitmap.remove(graphic);
 			graphic.dump();
@@ -124,7 +123,7 @@ class Paths
 			var obj = FlxG.bitmap._cache.get(key);
 			if(obj != null && !renderedGraphics.exists(key))
 			{
-				openfl.Assets.cache.removeBitmapData(key);
+				Assets.cache.removeBitmapData(key);
 				FlxG.bitmap._cache.remove(key);
 				obj.dump();
 				obj.destroy();
@@ -177,14 +176,10 @@ class Paths
 		return Assets.getText(getPath('$key.txt', library)).trim();
 
 	public static function getContent(filePath:String, ?library:String):String
-		#if desktop
-		return sys.io.File.getContent(getPath(filePath, library));
-		#else
-		return openfl.Assets.getText(getPath(filePath, library));
-		#end
+		return Assets.getText(getPath(filePath, library));
 
 	public static function json(key:String, ?library:String):Dynamic
-		return TJSON.parse(getContent('$key.json', library).trim());
+		return haxe.Json.parse(getContent('$key.json', library).trim());
 
 	public static function script(key:String, ?library:String):String
 		return getContent('$key', library);

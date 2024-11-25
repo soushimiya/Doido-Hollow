@@ -56,174 +56,6 @@ class Character extends FlxAnimate
 		// what
 		switch(curChar)
 		{
-			case "zero":
-				doidoChar.spritesheet += 'zero/zero';
-				doidoChar.anims = [
-					["idle", 	 'idle', 24, false],
-					['intro', 	'intro', 24, false],
-
-					["singLEFT", 'left', 24, false],
-					["singDOWN", 'down', 24, false],
-					["singUP",   'up', 	 24, false],
-					["singRIGHT",'right',24, false],
-				];
-				antialiasing = false;
-				scale.set(12,12);
-			case "gemamugen":
-				doidoChar.spritesheet += 'gemamugen/gemamugen';
-				doidoChar.anims = [
-					["idle", 	 'idle', 24, true],
-					['idle-alt', 'chacharealsmooth', 24, true],
-
-					["singLEFT", 'left', 24, false],
-					["singDOWN", 'down', 24, false],
-					["singUP",   'up', 	 24, false],
-					["singRIGHT",'right',24, false],
-				];
-				scale.set(2,2);
-			
-			case "senpai" | "senpai-angry":
-				doidoChar.spritesheet = 'characters/senpai/senpai';
-
-				if(curChar == "senpai") {
-					doidoChar.anims = [
-						['idle', 		'Senpai Idle instance 1', 		24, false],
-						['singLEFT', 	'SENPAI LEFT NOTE instance 1', 	24, false],
-						['singDOWN', 	'SENPAI DOWN NOTE instance 1', 	24, false],
-						['singUP', 		'SENPAI UP NOTE instance 1', 	24, false],
-						['singRIGHT', 	'SENPAI RIGHT NOTE instance 1',	24, false],
-					];
-				} else {
-					doidoChar.anims = [
-						['idle', 		'Angry Senpai Idle instance 1', 		24, false],
-						['singLEFT', 	'Angry Senpai LEFT NOTE instance 1', 	24, false],
-						['singDOWN', 	'Angry Senpai DOWN NOTE instance 1', 	24, false],
-						['singUP', 		'Angry Senpai UP NOTE instance 1', 		24, false],
-						['singRIGHT', 	'Angry Senpai RIGHT NOTE instance 1',	24, false],
-					];
-				}
-				antialiasing = false;
-				isPixelSprite = true;
-				scale.set(6,6);
-				
-			case "spirit":
-				doidoChar.spritesheet += 'senpai/spirit';
-				doidoChar.anims = [
-					['idle', 		"idle spirit_", 24, true],
-					['singLEFT', 	"left_", 		24, false],
-					['singDOWN', 	"spirit down_", 24, false],
-					['singUP', 		"up_", 			24, false],
-					['singRIGHT', 	"right_", 		24, false],
-				];
-
-				antialiasing = false;
-				isPixelSprite = true;
-				scale.set(6,6);
-				
-			case "bf-pixel":
-				deathChar = "bf-pixel-dead";
-				doidoChar.spritesheet += 'bf-pixel/bfPixel';
-				doidoChar.anims = [
-					['idle', 			'BF IDLE', 		24, false],
-					['singUP', 			'BF UP NOTE', 	24, false],
-					['singLEFT', 		'BF LEFT NOTE', 24, false],
-					['singRIGHT', 		'BF RIGHT NOTE',24, false],
-					['singDOWN', 		'BF DOWN NOTE', 24, false],
-					['singUPmiss', 		'BF UP MISS', 	24, false],
-					['singLEFTmiss', 	'BF LEFT MISS', 24, false],
-					['singRIGHTmiss', 	'BF RIGHT MISS',24, false],
-					['singDOWNmiss', 	'BF DOWN MISS', 24, false],
-				];
-
-				flipX = true;
-				antialiasing = false;
-				isPixelSprite = true;
-				scale.set(6,6);
-
-				if(!isPlayer)
-					invertDirections(X);
-
-			case "bf-pixel-dead":
-				deathChar = "bf-pixel-dead";
-				doidoChar.spritesheet += 'bf-pixel/bfPixelsDEAD';
-				doidoChar.anims = [
-					['firstDeath', 		"BF Dies pixel",24, false, CoolUtil.intArray(55)],
-					['deathLoop', 		"Retry Loop", 	24, true],
-					['deathConfirm', 	"RETRY CONFIRM",24, false],
-				];
-
-				idleAnims = ["firstDeath"];
-
-				flipX = true;
-				scale.set(6,6);
-				antialiasing = false;
-				isPixelSprite = true;
-				
-			case "gf-pixel":
-				doidoChar.spritesheet += 'gf-pixel/gfPixel';
-				doidoChar.anims = [
-					['danceLeft', 	"GF IDLE", 24, false, [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]],
-					['danceRight', 	"GF IDLE", 24, false, [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]],
-				];
-
-				idleAnims = ["danceLeft", "danceRight"];
-				
-				scale.set(6,6);
-				antialiasing = false;
-				isPixelSprite = true;
-				quickDancer = true;
-				flipX = isPlayer;
-			
-			case 'luano-day'|'luano-night':
-				var pref:String = (curChar == 'luano-night') ? 'night ' : '';
-				doidoChar.spritesheet += 'luano/luano';
-				doidoChar.anims = [
-					['idle', 		'${pref}idle', 24, false],
-					['singLEFT', 	'${pref}left', 24, false],
-					['singDOWN', 	'${pref}down', 24, false],
-					['singUP', 		'${pref}up',   24, false],
-					['singRIGHT', 	'${pref}right',24, false],
-					['jump', 		'${pref}jump', 24, false],
-				];
-
-				holdLoop = 0;
-			
-			case 'spooky'|'spooky-player':
-				doidoChar.spritesheet += 'spooky/SpookyKids';
-				doidoChar.anims = [
-					['danceLeft',	'Idle', 12, false, [0,2,4,8]],
-					['danceRight',	'Idle', 12, false, [10,12,14,16]],
-
-					['singLEFT',	'SingLEFT', 24, false],
-					['singDOWN', 		'SingDOWN', 24, false],
-					['singUP', 			'SingUP',   24, false],
-					['singRIGHT',	'SingRIGHT',24, false],
-				];
-				
-				idleAnims = ["danceLeft", "danceRight"];
-				quickDancer = true;
-
-				if(curChar == 'spooky-player')
-					invertDirections(X);
-			
-			case "pico":
-				doidoChar.spritesheet += 'pico/Pico_Basic';
-				doidoChar.extrasheets = ['characters/pico/Pico_Playable'];
-
-				doidoChar.anims = [
-					['idle',		'Pico Idle Dance', 24, false],
-					['singRIGHT',	'Pico NOTE LEFT0', 24, false],
-					['singDOWN', 	'Pico Down Note0', 24, false],
-					['singUP', 		'pico Up note0',   24, false],
-					['singLEFT',	'Pico Note Right0',24, false],
-
-					['singRIGHTmiss',	'Pico Left Note MISS', 24, false],
-					['singDOWNmiss',	'Pico Down Note MISS', 24, false],
-					['singUPmiss', 		'Pico Up Note MISS',   24, false],
-					['singLEFTmiss',	'Pico Right Note MISS',24, false],
-				];
-				flipX = true;
-
 			case "gf":
 				spriteType = ATLAS;
 				doidoChar.spritesheet += 'gf/gf-spritemap';
@@ -242,12 +74,6 @@ class Character extends FlxAnimate
 				idleAnims = ["danceLeft", "danceRight"];
 				quickDancer = true;
 				flipX = isPlayer;
-			
-			case "no-gf":
-				doidoChar.spritesheet += 'gf/no-gf/no-gf';
-				doidoChar.anims = [
-					['idle', 'idle'],
-				];
 
 			case "dad":
 				doidoChar.spritesheet += 'dad/DADDY_DEAREST';
@@ -264,49 +90,6 @@ class Character extends FlxAnimate
 					['singLEFT-loop', 	'Dad Sing Note LEFT', 	24, true, [3,4,5,6]],
 				];
 			
-			default: // case "bf"
-				if(!["bf", "face"].contains(curChar))
-					curChar = (isPlayer ? "bf" : "face");
-
-				if(curChar == "bf")
-				{
-					doidoChar.spritesheet += 'bf/BOYFRIEND';
-					doidoChar.anims = [
-						['idle', 			'BF idle dance', 		24, false],
-						['singUP', 			'BF NOTE UP0', 			24, false],
-						['singLEFT', 		'BF NOTE LEFT0', 		24, false],
-						['singRIGHT', 		'BF NOTE RIGHT0', 		24, false],
-						['singDOWN', 		'BF NOTE DOWN0', 		24, false],
-						['singUPmiss', 		'BF NOTE UP MISS', 		24, false],
-						['singLEFTmiss', 	'BF NOTE LEFT MISS', 	24, false],
-						['singRIGHTmiss', 	'BF NOTE RIGHT MISS', 	24, false],
-						['singDOWNmiss', 	'BF NOTE DOWN MISS', 	24, false],
-						['hey', 			'BF HEY', 				24, false],
-						['scared', 			'BF idle shaking', 		24, true],
-					];
-					
-					flipX = true;
-				}
-				else if(curChar == "face")
-				{
-					spriteType = ATLAS;
-					doidoChar.spritesheet += 'face';
-					doidoChar.anims = [
-						['idle', 			'idle-alive', 		24, false],
-						['idlemiss', 		'idle-dead', 		24, false],
-
-						['singLEFT', 		'left-alive', 		24, false],
-						['singDOWN', 		'down-alive', 		24, false],
-						['singUP', 			'up-alive', 		24, false],
-						['singRIGHT', 		'right-alive', 		24, false],
-						['singLEFTmiss', 	'left-dead', 		24, false],
-						['singDOWNmiss', 	'down-dead', 		24, false],
-						['singUPmiss', 		'up-dead', 			24, false],
-						['singRIGHTmiss', 	'right-dead', 		24, false],
-					];
-				}
-				this.curChar = curChar;
-			
 			case "bf-dead":
 				doidoChar.spritesheet += 'bf/BOYFRIEND';
 				doidoChar.anims = [
@@ -318,6 +101,39 @@ class Character extends FlxAnimate
 				idleAnims = ['firstDeath'];
 				
 				flipX = true;
+
+			default:
+				if (!Paths.fileExists('characters/$curChar.json'))
+				{
+					curChar = "bf";
+					this.curChar = "bf";
+				}
+
+				var jsonData = Paths.json('characters/$curChar');
+
+				doidoChar.spritesheet += jsonData.spritesheet;
+				if (jsonData.extrasheets != null)
+					doidoChar.extrasheets = jsonData.extrasheets;
+
+				for (i in 0...jsonData.anims.length){
+					var daAnim = jsonData.anims[i];
+					if (daAnim.lenth > 0)
+						doidoChar.anims.push([daAnim.animation, daAnim.prefix, daAnim.fps, daAnim.loop, daAnim.frames]);
+					else
+						doidoChar.anims.push([daAnim.animation, daAnim.prefix, daAnim.fps, daAnim.loop]);
+				}
+
+				flipX = jsonData.flipX;
+				
+				antialiasing = jsonData.antialiasing;
+				isPixelSprite = !jsonData.antialiasing;
+
+				scale.set(jsonData.scale, jsonData.scale);
+
+				if (jsonData.idleAnims != null)
+					idleAnims = jsonData.idleAnims;
+				if (jsonData.deathChar != null)
+					deathChar = jsonData.deathChar;
 		}
 
 		if(spriteType != ATLAS)
