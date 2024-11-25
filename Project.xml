@@ -45,6 +45,7 @@
 	<source path="source" />
 	<assets path="assets" if="VIDEOS_ALLOWED" />
 	<assets path="assets" exclude="videos" unless="VIDEOS_ALLOWED" />
+	<assets path='example_mods' rename='mods' embed='false'/>
 
 	<!-- RENAME UNDERSCORE FOLDERS -->
 	<section if="RENAME_UNDERSCORE">
@@ -72,6 +73,10 @@
 	<!-- ______ Custom Doido Libraries ______ -->
 	<haxelib name="flxanimate-doido"/>
 	<haxelib name="tjson"/>
+
+	<!-- ______ Polymod Defines ______ -->
+	<haxelib name="polymod" />
+	<haxedef name="POLYMOD_MOD_METADATA_FILE" value="meta.json" />
 
 	<!--In case you want to use nape with flixel-->
 	<!--<haxelib name="nape-haxe4" />-->

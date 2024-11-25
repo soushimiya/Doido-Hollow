@@ -47,11 +47,7 @@ class Paths
 	}
 	
 	public static function fileExists(filePath:String, ?library:String):Bool
-		#if desktop
-		return sys.FileSystem.exists(getPath(filePath, library));
-		#else
 		return openfl.Assets.exists(getPath(filePath, library));
-		#end
 	
 	public static function getSound(key:String, ?library:String):Sound
 	{
@@ -63,11 +59,7 @@ class Paths
 			}
 			Logs.print('created new sound $key');
 			renderedSounds.set(key,
-				#if desktop
-				Sound.fromFile(getPath('$key.ogg', library))
-				#else
 				openfl.Assets.getSound(getPath('$key.ogg', library))
-				#end
 			);
 		}
 		return renderedSounds.get(key);
@@ -81,11 +73,7 @@ class Paths
 		{
 			if(!renderedGraphics.exists(key))
 			{
-				#if desktop
-				var bitmap = BitmapData.fromFile(path);
-				#else
 				var bitmap = openfl.Assets.getBitmapData(path);
-				#end
 				
 				var newGraphic = FlxGraphic.fromBitmapData(bitmap, false, key, false);
 				Logs.print('created new image $key');
@@ -251,6 +239,19 @@ class Paths
 		try {
 			#if desktop
 			var rawList = sys.FileSystem.readDirectory(getPath(dir, library));
+
+			for (mod in backend.modding.ModHandler.loadedMods){
+				if (sys.FileSystem.exists('mods/$mod/$dir')){
+					if(rawList == null){ rawList = []; }
+					var modfile = sys.FileSystem.readDirectory('mods/$mod/$dir');
+					for (file in modfile){
+						if (!rawList.contains(file)){
+							rawList.push(file);
+						}
+					}
+				}
+			}
+
 			for(i in 0...rawList.length)
 			{
 				if(type != null) {

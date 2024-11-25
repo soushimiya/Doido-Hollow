@@ -12,6 +12,8 @@ import openfl.Lib;
 import openfl.display.Sprite;
 import openfl.events.UncaughtErrorEvent;
 
+import backend.modding.ModHandler;
+
 #if desktop
 import backend.system.ALSoftConfig;
 #end
@@ -46,6 +48,7 @@ class Main extends Sprite
 		#if ENABLE_PRINTING
 		Logs.init();
 		#end
+		ModHandler.init();
 
 		// shader coords fix
 		FlxG.signals.focusGained.add(function() {

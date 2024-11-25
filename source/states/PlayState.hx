@@ -38,6 +38,7 @@ import states.menu.*;
 import subStates.*;
 
 using StringTools;
+@:access(crowplexus.iris.Iris)
 
 class PlayState extends MusicBeatState
 {
@@ -199,6 +200,7 @@ class PlayState extends MusicBeatState
 		{
 			var scriptConfig:IrisConfig = new IrisConfig(path, true, true);
 			var newScript:Iris = new Iris(Paths.script('$path'), scriptConfig);
+			newScript.interp.parent = this;
 			loadedScripts.push(newScript);
 		}
 

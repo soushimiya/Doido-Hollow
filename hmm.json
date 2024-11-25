@@ -1,64 +1,97 @@
 {
-    "dependencies": [
-      {
-        "name": "lime",
-        "type": "haxelib",
-        "version": "8.1.2"
-      },
-      {
-        "name": "flxanimate-doido",
-        "type": "git",
-        "dir": null,
-        "ref": "master",
-        "url": "https://github.com/DoidoTeam/flxanimate-doido"
-      },
-      {
-        "name": "openfl",
-        "type": "haxelib",
-        "version": "9.3.3"
-      },
-      {
-        "name": "flixel",
-        "type": "haxelib",
-        "version": "5.8.0"
-      },
-      {
-        "name": "flixel-addons",
-        "type": "haxelib",
-        "version": "3.2.2"
-      },
-      {
-        "name": "flixel-ui",
-        "type": "haxelib",
-        "version": "2.6.1"
-      },
-      {
-        "name": "tjson",
-        "type": "git",
-        "dir": null,
-        "ref": "master",
-        "url": "https://github.com/DoidoTeam/TJSON"
-      },
-      {
-        "name": "hscript-iris",
-        "type": "git",
-        "dir": null,
-        "ref": "master",
-        "url": "https://github.com/crowplexus/hscript-iris"
-      },
-      {
-        "name": "hxdiscord_rpc",
-        "type": "git",
-        "dir": null,
-        "ref": "main",
-        "url": "https://github.com/MAJigsaw77/hxdiscord_rpc"
-      },
-      {
-        "name": "hxvlc",
-        "type": "git",
-        "dir": null,
-        "ref": "main",
-        "url": "https://github.com/MAJigsaw77/hxvlc"
-      }
-    ]
-  }
+	"dependencies": [
+		{
+			"name": "lime",
+			"type": "haxelib"
+		},
+		{
+			"name": "flxanimate-doido",
+			"type": "git",
+			"dir": null,
+			"ref": "master",
+			"url": "https://github.com/DoidoTeam/flxanimate-doido"
+		},
+		{
+			"name": "openfl",
+			"type": "haxelib"
+		},
+		{
+			"name": "flixel",
+			"type": "haxelib",
+			"version": "5.8.0"
+		},
+		{
+			"name": "flixel-addons",
+			"type": "haxelib",
+			"version": "3.2.2"
+		},
+		{
+			"name": "flixel-ui",
+			"type": "haxelib",
+			"version": "2.6.1"
+		},
+		{
+			"name": "tjson",
+			"type": "git",
+			"dir": null,
+			"ref": "master",
+			"url": "https://github.com/DoidoTeam/TJSON"
+		},
+		{
+			"name": "hscript-iris",
+			"type": "git",
+			"dir": null,
+			"ref": "master",
+			"url": "https://github.com/crowplexus/hscript-iris"
+		},
+		{
+			"name": "hxdiscord_rpc",
+			"type": "git",
+			"dir": null,
+			"ref": "main",
+			"url": "https://github.com/MAJigsaw77/hxdiscord_rpc"
+		},
+		{
+			"name": "hxvlc",
+			"type": "git",
+			"dir": null,
+			"ref": "main",
+			"url": "https://github.com/MAJigsaw77/hxvlc"
+		},
+		{
+			"name": "polymod",
+			"type": "git",
+			"dir": null,
+			"ref": "0fbdf27fe124549730accd540cec8a183f8652c0",
+			"url": "https://github.com/larsiusprime/polymod"
+		},
+		{
+			"name": "jsonpatch",
+			"type": "git",
+			"dir": null,
+			"ref": "f9b83215acd586dc28754b4ae7f69d4c06c3b4d3",
+			"url": "https://github.com/EliteMasterEric/jsonpatch"
+		},
+		{
+			"name": "jsonpath",
+			"type": "git",
+			"dir": null,
+			"ref": "7a24193717b36393458c15c0435bb7c4470ecdda",
+			"url": "https://github.com/EliteMasterEric/jsonpath"
+		},
+		{
+			"name": "thx.core",
+			"type": "git",
+			"dir": null,
+			"ref": "76d87418fadd92eb8e1b61f004cff27d656e53dd",
+			"url": "https://github.com/fponticelli/thx.core"
+		},
+		{
+			"name": "thx.semver",
+			"type": "git",
+			"dir": null,
+			"ref": "bdb191fe7cf745c02a980749906dbf22719e200b",
+			"url": "https://github.com/fponticelli/thx.semver"
+		}
+	]
+}
