@@ -18,6 +18,7 @@ import subStates.menu.DeleteScoreSubState;
 class StoryMenuState extends MusicBeatState
 {
 	var weekList:Array<FunkyWeek> = [];
+	var weekFileList:Array<String> = [];
 	
 	static var curWeek:Int = 0;
 	static var curDiff:String = "";
@@ -42,13 +43,22 @@ class StoryMenuState extends MusicBeatState
 		CoolUtil.playMusic("freakyMenu");
 
 		DiscordIO.changePresence("Story Mode - Choosin' a week");
-		
-		for(i in 0...SongData.weeks.length)
+
+		//Shitty Sorting
+		var weekPushList = Paths.text('weeks/weekList').split("\n");
+
+		var weekJsonList = Paths.readDir('weeks/', ".json");
+		for(week in weekJsonList)
+			if (!weekPushList.contains(week))
+				weekPushList.push(week);
+
+		for(week in weekPushList)
 		{
-			var week = SongData.getWeek(i);
-			if(week.freeplayOnly) continue;
+			var weekD:FunkyWeek = Paths.json('weeks/$week');
+			if(weekD.onlyFreeplay) continue;
 			
-			weekList.push(week);
+			weekList.push(weekD);
+			weekFileList.push(week);
 		}
 		
 		grpWeeks = new FlxTypedGroup<FlxSprite>();
@@ -56,7 +66,7 @@ class StoryMenuState extends MusicBeatState
 		
 		for(i in 0...weekList.length)
 		{
-			var weekSpr = new FlxSprite().loadGraphic(Paths.image('menu/story/week/${weekList[i].weekFile}'));
+			var weekSpr = new FlxSprite().loadGraphic(Paths.image('menu/story/week/${weekFileList[i]}'));
 			weekSpr.ID = i;
 			weekSpr.screenCenter(X);
 			grpWeeks.add(weekSpr);
@@ -156,14 +166,14 @@ class StoryMenuState extends MusicBeatState
 					//Main.switchState(new states.MenuState());
 					var daWeek = weekList[curWeek];
 					
-					PlayState.curWeek = daWeek.weekFile;
+					PlayState.curWeek = weekFileList[curWeek];
 					PlayState.songDiff = curDiff;
 					PlayState.isStoryMode = true;
 					PlayState.weekScore = 0;
 
 					var songList:Array<String> = [];
 					for(song in daWeek.songs)
-						songList.push(song[0]);
+						songList.push(song);
 					
 					PlayState.playList = songList;
 					PlayState.loadSong(songList[0]);
@@ -183,7 +193,7 @@ class StoryMenuState extends MusicBeatState
 			
 			if(Controls.justPressed(RESET))
 			{
-				var displayName:String = weekList[curWeek].weekFile;
+				var displayName:String = weekFileList[curWeek];
 				openSubState(new DeleteScoreSubState('week-' + displayName, curDiff, displayName));
 			}
 			
@@ -240,18 +250,20 @@ class StoryMenuState extends MusicBeatState
 		for(char in grpChars.members)
 		{
 			char.visible = true;
-			if(daWeek.chars[char.ID] == "")
+			if(daWeek.characters[char.ID] == "")
 				char.visible = false;
-			else if(daWeek.chars[char.ID] != char.curChar)
-				char.reloadChar(daWeek.chars[char.ID], ["dad","bf","gf"][char.ID]);
+			else if(daWeek.characters[char.ID] != char.curChar)
+				char.reloadChar(daWeek.characters[char.ID], ["dad","bf","gf"][char.ID]);
 		}
 		
 		trackTxt.text = "";
-		for(song in daWeek.songs)
-			trackTxt.text += song[0].toUpperCase() + '\n';
+		for(song in daWeek.songs){
+			var meta = Paths.json('songs/$song/meta');
+			trackTxt.text += meta.displayName.toUpperCase() + '\n';
+		}
 		trackTxt.x = 200 - (trackTxt.width / 2);
 		
-		weekNameTxt.text = weekList[curWeek].weekName.toUpperCase();
+		weekNameTxt.text = weekList[curWeek].name.toUpperCase();
 		weekNameTxt.x = FlxG.width - weekNameTxt.width - 8;
 		changeDiff();
 	}
@@ -266,7 +278,7 @@ class StoryMenuState extends MusicBeatState
 		curDiff = SongData.defaultDiffs[diffInt];
 		
 		// updates the score
-		scoreCount[0] = Highscore.getScore('week-' + weekList[curWeek].weekFile + '-' + curDiff).score;
+		scoreCount[0] = Highscore.getScore('week-' + weekFileList[curWeek] + '-' + curDiff).score;
 		
 		diffSelector.changeDiff(curDiff);
 	}

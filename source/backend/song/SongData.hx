@@ -32,59 +32,22 @@ typedef EventSong = {
 	// [0] = section // [1] = strumTime // [2] events
 	var songEvents:Array<Dynamic>;
 }
+typedef SongMeta = {
+	var icon:String;
+	var displayName:String;
+	var difficulties:Array<String>;
+}
 typedef FunkyWeek = {
-	var songs:Array<Array<String>>;
-	var ?weekFile:String;
-	var ?weekName:String;
-	var ?chars:Array<String>;
-	var ?freeplayOnly:Bool;
-	var ?storyModeOnly:Bool;
-	var ?diffs:Array<String>;
+	var songs:Array<String>;
+	var ?name:String;
+	var ?characters:Array<String>;
+	var ?onlyFreeplay:Bool;
+	var ?onlyStory:Bool;
 }
 
 class SongData
 {
 	public static var defaultDiffs:Array<String> = ['easy', 'normal', 'hard'];
-	public static var weeks:Array<FunkyWeek> = [
-		{
-			songs: [
-				['tutorial', 'gf'],
-			],
-			weekFile: 'tutorial',
-			weekName: 'funky beginnings',
-			chars: ['', 'bf', 'gf'],
-		},
-		{
-			songs: [
-				['bopeebo', 	'dad'],
-				['fresh', 		'dad'],
-				['dadbattle', 	'dad'],
-			],
-			weekFile: 'week1',
-			weekName: 'daddy dearest',
-			chars: ['dad', 'bf', 'gf'],
-			diffs: ['easy', 'normal', 'hard', 'erect', 'nightmare'],
-		}
-	];
-	inline public static function getWeek(index:Int):FunkyWeek
-	{
-		var week = weeks[index];
-		if(week == null)
-			week = {songs: []};
-		if(week.weekFile == null)
-			week.weekFile = '$index';
-		if(week.weekName == null)
-			week.weekName = '';
-		if(week.chars == null)
-			week.chars = ['', '', ''];
-		if(week.freeplayOnly == null)
-			week.freeplayOnly = false;
-		if(week.storyModeOnly == null)
-			week.storyModeOnly = false;
-		if(week.diffs == null)
-			week.diffs = defaultDiffs;
-		return week;
-	}
 
 	// use these to whatever
 	inline public static function defaultSong():SwagSong

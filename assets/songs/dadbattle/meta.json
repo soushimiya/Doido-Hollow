@@ -1,0 +1,5 @@
+{
+    "icon": "dad",
+    "displayName": "Dadbattle",
+    "difficulties": ["easy", "normal", "hard", "erect", "nightmare"]
+}

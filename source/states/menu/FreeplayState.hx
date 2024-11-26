@@ -20,6 +20,7 @@ import subStates.menu.DeleteScoreSubState;
 using StringTools;
 
 typedef FreeplaySong = {
+	var displayName:String;
 	var name:String;
 	var icon:String;
 	var diffs:Array<String>;
@@ -29,9 +30,10 @@ class FreeplayState extends MusicBeatState
 {
 	var songList:Array<FreeplaySong> = [];
 	
-	function addSong(name:String, icon:String, diffs:Array<String>)
+	function addSong(name:String, icon:String, diffs:Array<String>, display:String)
 	{
 		songList.push({
+			displayName: display,
 			name: name,
 			icon: icon,
 			diffs: diffs,
@@ -61,28 +63,22 @@ class FreeplayState extends MusicBeatState
 		add(bg);
 		
 		// adding songs
-		for(i in 0...SongData.weeks.length)
-		{
-			var week = SongData.getWeek(i);
-			if(week.storyModeOnly) continue;
+		var weekPushList = Paths.text('weeks/weekList').split("\n");
 
-			for(song in week.songs)
-				addSong(song[0], song[1], week.diffs);
-		}
-
-		var extraSongs = CoolUtil.coolTextFile('extra-songs');
-		for(line in extraSongs)
+		var weekJsonList = Paths.readDir('weeks/', ".json");
+		for(week in weekJsonList)
+			if (!weekPushList.contains(week))
+				weekPushList.push(week);
+		
+		for(week in weekPushList)
 		{
-			if(line.startsWith("//")) continue;
-			// if the line is empty then skip it
-			var diffArray:Array<String> = line.split(' ');
-			if(diffArray.length < 1) continue;
-			// separating the song name from the difficulties
-			var songName:String = diffArray.shift();
-			// if theres no difficulties, add easy normal and hard
-			if(diffArray.length < 1) diffArray = SongData.defaultDiffs;
-			// finally adding the song
-			addSong(songName, "face", diffArray);
+			var week:FunkyWeek = Paths.json('weeks/$week');
+			if(week.onlyStory) continue;
+
+			for(song in week.songs){
+				var meta:SongMeta = Paths.json('songs/$song/meta');
+				addSong(song, meta.icon, meta.difficulties, meta.displayName);
+			}
 		}
 
 		grpItems = new FlxGroup();
@@ -90,7 +86,7 @@ class FreeplayState extends MusicBeatState
 
 		for(i in 0...songList.length)
 		{
-			var label:String = songList[i].name;
+			var label:String = songList[i].displayName;
 			//label = label.replace("-", " ");
 
 			var item = new AlphabetMenu(0, 0, label, true);
