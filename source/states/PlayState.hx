@@ -752,7 +752,7 @@ class PlayState extends MusicBeatState
 			}
 			// regular splashes
 			var noteDiff:Float = Math.abs(note.noteDiff());
-			if(noteDiff <= Timings.getTimings("sick")[1] || strumline.botplay)
+			if(noteDiff <= Timings.getTimings("perfect")[1] || strumline.botplay)
 				strumline.playSplash(note);
 		}
 
@@ -1293,7 +1293,7 @@ class PlayState extends MusicBeatState
 							if(noteDiff <= minTiming && !note.missed && !note.gotHit && note.noteData == i)
 							{
 								if(note.mustMiss
-								&& Conductor.songPos >= note.songTime + Timings.getTimings("sick")[1])
+								&& Conductor.songPos >= note.songTime + Timings.getTimings("perfect")[1])
 								{
 									continue;
 								}

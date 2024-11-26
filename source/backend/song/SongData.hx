@@ -63,30 +63,7 @@ class SongData
 			weekName: 'daddy dearest',
 			chars: ['dad', 'bf', 'gf'],
 			diffs: ['easy', 'normal', 'hard', 'erect', 'nightmare'],
-		},
-		{
-			songs: [
-				['senpai', 	'senpai'],
-				['roses', 	'senpai'],
-				['thorns', 	'spirit'],
-			],
-			weekFile: 'week6',
-			weekName: 'hating simulator (ft. moawling)',
-			chars: ['senpai', 'bf', 'gf'],
-			diffs: ['easy', 'normal', 'hard', 'erect', 'nightmare'],
-		},
-		{
-			songs: [
-				["bittersweet", 	"spooky"],
-				["blam", 			"pico"],
-				["-debug", 			"bf-pixel"],
-				["useless",			"dad"],
-				["collision", 		"gemamugen"], // CU PINTO BOSTA
-				["lunar-odyssey",	"luano-day"],
-				["beep-power", 		"dad"],
-			],
-			freeplayOnly: true,
-		},
+		}
 	];
 	inline public static function getWeek(index:Int):FunkyWeek
 	{

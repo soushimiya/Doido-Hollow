@@ -7,7 +7,7 @@
 			"loop": false,
 			"frames": [],
 			"offset": [
-				3,
+				0,
 				0
 			]
 		},
@@ -19,7 +19,7 @@
 			"frames": [],
 			"offset": [
 				0,
-				-19
+				0
 			]
 		},
 		{
@@ -30,7 +30,7 @@
 			"frames": [],
 			"offset": [
 				0,
-				-20
+				0
 			]
 		},
 		{
@@ -41,7 +41,7 @@
 			"frames": [],
 			"offset": [
 				0,
-				4
+				0
 			]
 		},
 		{
@@ -52,7 +52,7 @@
 			"frames": [],
 			"offset": [
 				0,
-				-20
+				0
 			]
 		},
 		{
@@ -62,8 +62,8 @@
 			"loop": false,
 			"frames": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
 			"offset": [
-				-2,
-				-21
+				-51,
+				315
 			]
 		},
 		{
@@ -74,7 +74,7 @@
 			"frames": [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
 			"offset": [
 				0,
-				-9
+				0
 			]
 		},
 		{
@@ -85,13 +85,13 @@
 			"frames": [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
 			"offset": [
 				0,
-				-9
+				0
 			]
 		}
 	],
 	"globalOffset": [
-		0,
-		0
+		-116,
+		-216
 	],
 	"cameraOffset": [
 		-102,
@@ -101,10 +101,12 @@
 		0,
 		0
 	],
-	"spritesheet": "gf/GF_assets",
+	"spritesheet": "gf/gf-spritemap",
+	"icon": "gf",
+	"spriteType": "Atlas",
 	"flipX": false,
 	"antialiasing": true,
 	"scale": 1,
-	"idleAnims": ["danceLeft", "danceRight"]
+	"idleAnims": ["singLEFT", "singRIGHT"]
 
 }

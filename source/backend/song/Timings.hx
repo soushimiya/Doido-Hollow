@@ -5,17 +5,19 @@ import flixel.math.FlxMath;
 class Timings
 {
 	public static var timingsArray:Array<Array<Dynamic>> = [
-		["sick",	45,		1],
+		["perfect",	30,		1],
+		["sick",	45,		0.9825],
 		["good",	90,		0.75],
 		["bad",		135,	0.25],
 		["shit",	160,	-1.0],
 		["miss",	180,	-1.75],
 	];
 	public static var holdTimings:Array<Dynamic> = [
-		[0.85, timingsArray[0][1]], // sick
-		[0.60, timingsArray[1][1]], // good
-		[0.35, timingsArray[2][1]], // bad
-		[0.20, timingsArray[3][1]], // shit
+		[1, timingsArray[0][1]], // perfect
+		[0.85, timingsArray[1][1]], // sick
+		[0.60, timingsArray[2][1]], // good
+		[0.35, timingsArray[3][1]], // bad
+		[0.20, timingsArray[4][1]], // shit
 	];
 	
 	public static var minTiming:Float = getTimings("miss")[1];

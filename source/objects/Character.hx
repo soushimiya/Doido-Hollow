@@ -71,7 +71,7 @@ class Character extends FlxAnimate
 
 				for (i in 0...jsonData.anims.length){
 					var daAnim = jsonData.anims[i];
-					if (daAnim.lenth > 0)
+					if (daAnim.frames.length > 0)
 						doidoChar.anims.push([daAnim.animation, daAnim.prefix, daAnim.fps, daAnim.loop, daAnim.frames]);
 					else
 						doidoChar.anims.push([daAnim.animation, daAnim.prefix, daAnim.fps, daAnim.loop]);
@@ -92,6 +92,12 @@ class Character extends FlxAnimate
 				}
 				if (jsonData.deathChar != null)
 					deathChar = jsonData.deathChar;
+
+				if (jsonData.spriteType != null)
+					switch(jsonData.spriteType.toUpperCase()){
+						case "ATLAS":
+							spriteType = ATLAS;
+					}
 
 				//Offset shiits
 				globalOffset.set(jsonData.globalOffset[0], jsonData.globalOffset[1]);

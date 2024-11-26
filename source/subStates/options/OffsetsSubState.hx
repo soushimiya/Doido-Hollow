@@ -9,7 +9,6 @@ import flixel.group.FlxGroup;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.sound.FlxSound;
-import objects.hud.HealthIcon;
 import objects.menu.Alphabet;
 import objects.menu.options.OptionSelector;
 import states.PlayState;

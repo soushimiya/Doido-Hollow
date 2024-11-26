@@ -152,9 +152,9 @@ class RatingFNF extends FlxSprite
 			assetModifier = "base";
 		
 		var daGraph = Paths.image('hud/$assetModifier/ratings');
-		loadGraphic(daGraph, true, Math.floor(daGraph.width), Math.floor(daGraph.height / 4));
+		loadGraphic(daGraph, true, Math.floor(daGraph.width), Math.floor(daGraph.height / 5));
 		
-		var ratingNum:Int = ["sick", "good", "bad", "shit"].indexOf(rating);
+		var ratingNum:Int = ["perfect", "sick", "good", "bad", "shit"].indexOf(rating);
 		
 		if(ratingNum == -1)
 		{
