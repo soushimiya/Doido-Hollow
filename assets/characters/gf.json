@@ -1,112 +1,160 @@
 {
+	"idleAnims": [
+		"danceLeft",
+		"danceRight"
+	],
+	"spriteType": "Atlas",
+	"globalOffset": [
+		-116,
+		-216
+	],
+	"flipX": false,
+	"spritesheet": "gf/gf-spritemap",
 	"anims": [
 		{
-			"animation": "cheer",
+			"frames": [],
 			"prefix": "GF cheer",
 			"fps": 24,
 			"loop": false,
-			"frames": [],
+			"animation": "cheer",
 			"offset": [
 				0,
 				0
 			]
 		},
 		{
-			"animation": "singLEFT",
+			"frames": [],
 			"prefix": "GF left note",
 			"fps": 24,
 			"loop": false,
-			"frames": [],
+			"animation": "singLEFT",
 			"offset": [
 				0,
 				0
 			]
 		},
 		{
-			"animation": "singDOWN",
+			"frames": [],
 			"prefix": "GF Down Note",
 			"fps": 24,
 			"loop": false,
-			"frames": [],
+			"animation": "singDOWN",
 			"offset": [
 				0,
 				0
 			]
 		},
 		{
-			"animation": "singUP",
+			"frames": [],
 			"prefix": "GF Up Note",
 			"fps": 24,
 			"loop": false,
-			"frames": [],
+			"animation": "singUP",
 			"offset": [
 				0,
 				0
 			]
 		},
 		{
-			"animation": "singRIGHT",
+			"frames": [],
 			"prefix": "GF Right Note",
 			"fps": 24,
 			"loop": false,
-			"frames": [],
+			"animation": "singRIGHT",
 			"offset": [
 				0,
 				0
 			]
 		},
 		{
-			"animation": "sad",
+			"frames": [
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12
+			],
 			"prefix": "gf sad",
 			"fps": 24,
 			"loop": false,
-			"frames": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+			"animation": "sad",
 			"offset": [
 				-51,
 				315
 			]
 		},
 		{
-			"animation": "danceLeft",
+			"frames": [
+				30,
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14
+			],
 			"prefix": "GF Dancing Beat",
 			"fps": 24,
 			"loop": false,
-			"frames": [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+			"animation": "danceLeft",
 			"offset": [
 				0,
 				0
 			]
 		},
 		{
-			"animation": "danceRight",
+			"frames": [
+				15,
+				16,
+				17,
+				18,
+				19,
+				20,
+				21,
+				22,
+				23,
+				24,
+				25,
+				26,
+				27,
+				28,
+				29
+			],
 			"prefix": "GF Dancing Beat",
 			"fps": 24,
 			"loop": false,
-			"frames": [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+			"animation": "danceRight",
 			"offset": [
 				0,
 				0
 			]
 		}
 	],
-	"globalOffset": [
-		-116,
-		-216
+	"ratingsOffset": [
+		0,
+		0
 	],
 	"cameraOffset": [
 		-102,
 		-142
 	],
-	"ratingsOffset": [
-		0,
-		0
-	],
-	"spritesheet": "gf/gf-spritemap",
-	"icon": "gf",
-	"spriteType": "Atlas",
-	"flipX": false,
 	"antialiasing": true,
-	"scale": 1,
-	"idleAnims": ["singLEFT", "singRIGHT"]
-
+	"scale": 1
 }

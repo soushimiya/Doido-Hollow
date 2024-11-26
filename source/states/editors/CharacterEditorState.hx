@@ -98,6 +98,8 @@ class CharacterEditorState extends MusicBeatState
 	var changeInputY:FlxUIInputText;
 	var checkCamFollow:FlxUICheckBox;
 
+	var checkFlipChar:FlxUICheckBox;
+
 	override function create()
 	{
 		super.create();
@@ -237,7 +239,7 @@ class CharacterEditorState extends MusicBeatState
 		ghostDropDown.selectedLabel = ghost.curChar;
 		ghostDropDown.cameras = [camHUD];*/
 
-		var checkFlipChar = new FlxUICheckBox(10, 50, null, null, "Char FlipX", 100);
+		checkFlipChar = new FlxUICheckBox(10, 50, null, null, "Char FlipX", 100);
 		checkFlipChar.checked = char.flipX;
 		function flipCheck()
 		{
@@ -584,14 +586,36 @@ class CharacterEditorState extends MusicBeatState
 
 	function saveOffsets()
 	{
-		var exportData = CharacterUtil.defaultOffsets();
+		var ogCharJson:CharacterJSON = Paths.json('characters/${char.curChar}');
+		var newAnimArray:Array<CharacterAnim> = [];
+		for (i in 0...ogCharJson.anims.length){
+			newAnimArray.push({
+				animation: ogCharJson.anims[i].animation,
+				prefix: ogCharJson.anims[i].prefix,
+				fps: ogCharJson.anims[i].fps,
+				loop: ogCharJson.anims[i].loop,
+				frames: ogCharJson.anims[i].frames,
+				offset: [char.animOffsets[ogCharJson.anims[i].animation][0], char.animOffsets[ogCharJson.anims[i].animation][1]],
+			});
+		}
 		
-		exportData.globalOffset = [char.globalOffset.x, char.globalOffset.y];
-		exportData.cameraOffset = [char.cameraOffset.x, char.cameraOffset.y];
-		exportData.ratingsOffset= [char.ratingsOffset.x, char.ratingsOffset.y];
-		
-		for(anim => offsets in char.animOffsets)
-			exportData.animOffsets.push([anim, offsets[0], offsets[1]]);
+		var exportData:CharacterJSON = {
+			anims: newAnimArray,
+			globalOffset: [char.globalOffset.x, char.globalOffset.y],
+			cameraOffset: [char.cameraOffset.x, char.cameraOffset.y],
+			ratingsOffset: [char.ratingsOffset.x, char.ratingsOffset.y],
+			spritesheet: ogCharJson.spritesheet,
+			//spriteType: ogCharJson.spriteType,
+			flipX: checkFlipChar.checked,
+			antialiasing: ogCharJson.antialiasing,
+			scale: ogCharJson.scale
+		};
+		if (ogCharJson.extrasheets != null)
+			exportData.extrasheets = ogCharJson.extrasheets;
+		if (ogCharJson.idleAnims != null)
+			exportData.idleAnims = ogCharJson.idleAnims;
+		if (ogCharJson.spriteType != null)
+			exportData.spriteType = ogCharJson.spriteType;
 		
 		var data:String = Json.stringify(exportData, "\t");
 

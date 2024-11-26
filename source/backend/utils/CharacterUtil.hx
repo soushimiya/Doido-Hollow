@@ -1,10 +1,27 @@
 package backend.utils;
 
-typedef DoidoOffsets = {
-	var animOffsets:Array<Array<Dynamic>>;
+typedef CharacterJSON = {
+	var anims:Array<CharacterAnim>;
 	var globalOffset:Array<Float>;
 	var cameraOffset:Array<Float>;
 	var ratingsOffset:Array<Float>;
+	var spritesheet:String;
+	var ?extrasheets:Array<String>;
+	var ?spriteType:String;
+	var flipX:Bool;
+	var antialiasing:Bool;
+	var scale:Float;
+	var ?idleAnims: Array<String>;
+	var ?deathChar:String;
+}
+
+typedef CharacterAnim = {
+	var animation:String;
+	var prefix:String;
+	var fps:Float;
+	var loop:Bool;
+	var frames:Array<Int>;
+	var offset:Array<Float>;
 }
 
 typedef DoidoCharacter = {
@@ -23,15 +40,18 @@ enum SpriteType {
 
 class CharacterUtil
 {
-	inline public static function defaultOffsets():DoidoOffsets
+	inline public static function defaultJson():CharacterJSON
 	{
 		return {
-			animOffsets: [
-				//["idle",0,0],
-			],
+			anims: [],
 			globalOffset: [0,0],
 			cameraOffset: [0,0],
-			ratingsOffset:[0,0]
+			ratingsOffset:[0,0],
+			spritesheet: "",
+			spriteType: "Sparrow",
+			flipX: false,
+			antialiasing: true,
+			scale: 1
 		};
 	}
 

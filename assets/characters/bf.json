@@ -1,106 +1,112 @@
 {
+	"globalOffset": [
+		0,
+		0
+	],
+	"flipX": true,
+	"spritesheet": "bf/BOYFRIEND",
 	"anims": [
 		{
-			"animation": "idle",
+			"frames": [],
 			"prefix": "BF idle dance",
 			"fps": 24,
 			"loop": false,
-			"frames": [],
+			"animation": "idle",
 			"offset": [
 				0,
 				0
 			]
 		},
 		{
-			"animation": "singLEFT",
+			"frames": [],
 			"prefix": "BF NOTE LEFT0",
 			"fps": 24,
 			"loop": false,
-			"frames": [],
+			"animation": "singLEFT",
 			"offset": [
 				12,
 				-6
 			]
 		},
 		{
-			"animation": "singDOWN",
+			"frames": [],
 			"prefix": "BF NOTE DOWN0",
 			"fps": 24,
 			"loop": false,
-			"frames": [],
+			"animation": "singDOWN",
 			"offset": [
 				-12,
 				-50
 			]
 		},
 		{
-			"animation": "singUP",
+			"frames": [],
 			"prefix": "BF NOTE UP0",
 			"fps": 24,
 			"loop": false,
-			"frames": [],
+			"animation": "singUP",
 			"offset": [
 				-41,
 				32
 			]
 		},
 		{
-			"animation": "singRIGHT",
+			"frames": [],
 			"prefix": "BF NOTE RIGHT0",
 			"fps": 24,
 			"loop": false,
-			"frames": [],
+			"animation": "singRIGHT",
 			"offset": [
 				-46,
 				-6
 			]
 		},
 		{
-			"animation": "singLEFTmiss",
+			"frames": [],
 			"prefix": "BF NOTE LEFT MISS",
 			"fps": 24,
 			"loop": false,
-			"frames": [],
+			"animation": "singLEFTmiss",
 			"offset": [
 				10,
 				18
 			]
 		},
 		{
-			"animation": "singDOWNmiss",
+			"frames": [],
 			"prefix": "BF NOTE DOWN MISS",
 			"fps": 24,
 			"loop": false,
-			"frames": [],
+			"animation": "singDOWNmiss",
 			"offset": [
 				-11,
 				-22
 			]
 		},
 		{
-			"animation": "singUPmiss",
+			"frames": [],
 			"prefix": "BF NOTE UP MISS",
 			"fps": 24,
 			"loop": false,
-			"frames": [],
+			"animation": "singUPmiss",
 			"offset": [
 				-36,
 				28
 			]
 		},
 		{
-			"animation": "singRIGHTmiss",
+			"frames": [],
 			"prefix": "BF NOTE RIGHT MISS",
 			"fps": 24,
 			"loop": false,
-			"frames": [],
+			"animation": "singRIGHTmiss",
 			"offset": [
 				-45,
 				21
 			]
 		}
 	],
-	"globalOffset": [
+	"ratingsOffset": [
 		0,
 		0
 	],
@@ -108,13 +114,6 @@
 		0,
 		-80
 	],
-	"ratingsOffset": [
-		0,
-		0
-	],
-	"spritesheet": "bf/BOYFRIEND",
-	"deathChar": "bf-dead",
-	"flipX": true,
 	"antialiasing": true,
 	"scale": 1
 }

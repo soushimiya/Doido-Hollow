@@ -63,7 +63,7 @@ class Character extends FlxAnimate
 					this.curChar = "bf";
 				}
 
-				var jsonData = Paths.json('characters/$curChar');
+				var jsonData:CharacterJSON = Paths.json('characters/$curChar');
 
 				doidoChar.spritesheet += jsonData.spritesheet;
 				if (jsonData.extrasheets != null)
