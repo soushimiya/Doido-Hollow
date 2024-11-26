@@ -12,6 +12,7 @@ typedef SwagSong =
 
 	var player1:String;
 	var player2:String;
+	var gf:String;
 	//var assetModifier:String;
 }
 typedef SwagSection =
@@ -98,6 +99,7 @@ class SongData
 
 			player1: "bf",
 			player2: "dad",
+			gf: "gf"
 		};
 	}
 	inline public static function defaultSection():SwagSection

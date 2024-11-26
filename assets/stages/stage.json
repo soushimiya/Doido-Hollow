@@ -1,0 +1,30 @@
+{
+    "zoom": 0.9,
+
+    "layers": [
+        {
+            "texture": "stage/stageback",
+            "position": [-600, -600],
+            "scroll": 0.6,
+            "scale": 1
+        },
+        {
+            "texture": "stage/stagefront",
+            "position": [-580, 440],
+            "scroll": 1,
+            "scale": 1
+        },
+        {
+            "texture": "stage/stagecurtains",
+            "position": [-600, -400],
+            "scroll": 1.4,
+            "scale": 1
+        }
+    ],
+
+    "positions": {
+        "gf": [660, 580],
+        "dad": [260, 700],
+        "boyfriend": [1100, 700]
+    }
+}

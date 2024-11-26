@@ -185,6 +185,10 @@ class PlayState extends MusicBeatState
 		while(FlxG.sound.music.playing)
 			CoolUtil.playMusic();
 		resetStatics();
+		
+		//old charts support
+		if (SONG.gf == null)
+			SONG.gf = "gf";
 		//if(SONG == null)
 		//	SONG = SongData.loadFromJson("ugh");
 
@@ -253,7 +257,7 @@ class PlayState extends MusicBeatState
 		*	remember to put false after "new char" for non-singers (like gf)
 		*	so it doesnt reload the icons
 		*/
-		gf = new CharGroup(false, stageBuild.gfVersion);
+		gf = new CharGroup(false, SONG.gf);
 		dad = new CharGroup(false, SONG.player2);
 		boyfriend = new CharGroup(true, SONG.player1);
 
@@ -270,18 +274,16 @@ class PlayState extends MusicBeatState
 		
 		// basic layering ig
 		var addList:Array<FlxBasic> = [];
+
+		if(dad.curChar.startsWith("gf") && dad.curChar == gf.curChar && gf.visible)
+		{
+			dad.setPos(stageBuild.gfPos.x, stageBuild.gfPos.y);
+			gf.visible = false;
+		}
 		
 		for(char in characters)
-		{
-			if(char.curChar == gf.curChar && char != gf && gf.visible)
-			{
-				changeChar(char, gf.curChar);
-				char.setPos(stageBuild.gfPos.x, stageBuild.gfPos.y);
-				gf.visible = false;
-			}
-			
 			addList.push(char);
-		}
+
 		addList.push(stageBuild.foreground);
 		
 		for(item in addList)
@@ -1838,9 +1840,7 @@ class PlayState extends MusicBeatState
 		if(stageBuild.curStage != newStage)
 			stageBuild.reloadStage(newStage);
 		
-		gf.curChar = stageBuild.gfVersion;
 		gf.setPos(stageBuild.gfPos.x, stageBuild.gfPos.y);
-		gf.reload();
 
 		dad.setPos(stageBuild.dadPos.x, stageBuild.dadPos.y);
 
@@ -1973,9 +1973,6 @@ class PlayState extends MusicBeatState
 			switch(event.eventName) {
 				case 'Change Character':
 					strToChar(event.value1).addChar(event.value2);
-	
-				case 'Change Stage':
-					gf.addChar(stageBuild.getGfVersion(event.value1));
 			}
 		}
 

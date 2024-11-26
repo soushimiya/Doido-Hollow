@@ -3,6 +3,7 @@
 		"speed": 2.6,
 		"player1": "bf",
 		"player2": "dad",
+		"gf": "gf",
 		"notes": [
 			{
 				"lengthInSteps": 16,

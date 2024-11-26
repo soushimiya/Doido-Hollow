@@ -13,7 +13,6 @@ class Stage extends FlxGroup
 	public var bfPos:FlxPoint  = new FlxPoint();
 	public var dadPos:FlxPoint = new FlxPoint();
 	public var gfPos:FlxPoint  = new FlxPoint();
-	public var gfVersion:String = "";
 
 	public var foreground:FlxGroup;
 
@@ -51,145 +50,41 @@ class Stage extends FlxGroup
 	{
 		this.clear();
 		foreground.clear();
+
+		var stageJSON:StageData = {
+			zoom: 1,
+			layers: [],
+			positions: {
+				gf: [650, 100],
+				dad: [200, 150],
+				boyfriend: [850, 0]
+			}
+		}
+
+		if (Paths.fileExists('stages/$curStage.json'))
+			stageJSON = Paths.json('stages/$curStage');
+
+		this.curStage = curStage;
+		PlayState.defaultCamZoom = stageJSON.zoom;
 		
-		gfPos.set(660, 580);
+		gfPos.set(stageJSON.positions.gf[0], stageJSON.positions.gf[1]);
 		/*dadPos.set(100,700);
 		bfPos.set(850, 700);*/
-		dadPos.set(260, 700);
-		bfPos.set(1100, 700);
-		gfVersion = getGfVersion(curStage);
+		dadPos.set(stageJSON.positions.dad[0], stageJSON.positions.dad[1]);
+		bfPos.set(stageJSON.positions.boyfriend[0], stageJSON.positions.boyfriend[1]);
 		// setting gf to "" makes her invisible
 		
-		PlayState.defaultCamZoom = 1.0;
-		
 		this.curStage = curStage;
-		switch(curStage)
+
+		for (layer in stageJSON.layers)
 		{
-			default:
-				this.curStage = "stage";
-				PlayState.defaultCamZoom = 0.9;
-				
-				var bg = new FlxSprite(-600, -600).loadGraphic(Paths.image("backgrounds/stage/stageback"));
-				bg.scrollFactor.set(0.6,0.6);
-				add(bg);
-				
-				var front = new FlxSprite(-580, 440);
-				front.loadGraphic(Paths.image("backgrounds/stage/stagefront"));
-				add(front);
-				
-				var curtains = new FlxSprite(-600, -400).loadGraphic(Paths.image("backgrounds/stage/stagecurtains"));
-				curtains.scrollFactor.set(1.4,1.4);
-				foreground.add(curtains);
-				
-			case "mugen":
-				PlayState.defaultCamZoom = 0.7;
-				//gfPos.y += 80;
-				dadPos.x -= 100;
-				
-				var bg = new FlxSprite(-640, -1000).loadGraphic(Paths.image("backgrounds/mugen/mugen"));
-				add(bg);
-				
-			case "school":
-				bfPos.x -= 70;
-				dadPos.x += 50;
-				gfPos.x += 20;
-				gfPos.y += 50;
-				
-				var bgSky = new FlxSprite().loadGraphic(Paths.image('backgrounds/school/weebSky'));
-				bgSky.scrollFactor.set(0.1, 0.1);
-				add(bgSky);
-				
-				var bgSchool:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.image('backgrounds/school/weebSchool'));
-				bgSchool.scrollFactor.set(0.6, 0.90);
-				add(bgSchool);
-				
-				var bgStreet:FlxSprite = new FlxSprite(-200).loadGraphic(Paths.image('backgrounds/school/weebStreet'));
-				bgStreet.scrollFactor.set(0.95, 0.95);
-				add(bgStreet);
-				
-				var fgTrees:FlxSprite = new FlxSprite(-200 + 170, 130).loadGraphic(Paths.image('backgrounds/school/weebTreesBack'));
-				fgTrees.scrollFactor.set(0.9, 0.9);
-				add(fgTrees);
-				
-				var bgTrees:FlxSprite = new FlxSprite(-200 - 380, -1100);
-				bgTrees.frames = Paths.getPackerAtlas('backgrounds/school/weebTrees');
-				bgTrees.animation.add('treeLoop', CoolUtil.intArray(18), 12);
-				bgTrees.animation.play('treeLoop');
-				bgTrees.scrollFactor.set(0.85, 0.85);
-				add(bgTrees);
-				
-				var treeLeaves:FlxSprite = new FlxSprite(-200, -40);
-				treeLeaves.frames = Paths.getSparrowAtlas('backgrounds/school/petals');
-				treeLeaves.animation.addByPrefix('leaves', 'PETALS ALL', 24, true);
-				treeLeaves.animation.play('leaves');
-				treeLeaves.scrollFactor.set(0.85, 0.85);
-				add(treeLeaves);
-				
-				var bgGirls = new FlxSprite(-100, 175); // 190
-				bgGirls.frames = Paths.getSparrowAtlas('backgrounds/school/bgFreaks');
-				bgGirls.scrollFactor.set(0.9, 0.9);
-				
-				var girlAnim:String = "girls group";
-				if(PlayState.SONG.song == 'roses')
-					girlAnim = 'fangirls dissuaded';
-				
-				bgGirls.animation.addByIndices('danceLeft',  'BG $girlAnim', CoolUtil.intArray(14),		"", 24, false);
-				bgGirls.animation.addByIndices('danceRight', 'BG $girlAnim', CoolUtil.intArray(30, 15), "", 24, false);
-				bgGirls.animation.play('danceLeft');
-				bgGirls._stepHit = function(curStep:Int)
-				{
-					if(curStep % 4 == 0)
-					{
-						if(bgGirls.animation.curAnim.name == 'danceLeft')
-							bgGirls.animation.play('danceRight', true);
-						else
-							bgGirls.animation.play('danceLeft', true);
-					}
-				}
-				add(bgGirls);
-				
-				// easier to manage
-				for(rawItem in members)
-				{
-					if(Std.isOfType(rawItem, FlxSprite))
-					{
-						var item:FlxSprite = cast rawItem;
-						item.antialiasing = false;
-						item.isPixelSprite = true;
-						item.scale.set(6,6);
-						item.updateHitbox();
-						item.x -= 170;
-						item.y -= 145;
-					}
-				}
-				
-			case "school-evil":
-				bfPos.x -= 70;
-				dadPos.x += 50;
-				gfPos.x += 20;
-				gfPos.y += 50;
-				
-				var bg:FlxSprite = new FlxSprite(400, 100);
-				bg.frames = Paths.getSparrowAtlas('backgrounds/school/animatedEvilSchool');
-				bg.animation.addByPrefix('idle', 'background 2', 24);
-				bg.animation.play('idle');
-				bg.scrollFactor.set(0.8, 0.9);
-				bg.antialiasing = false;
-				bg.scale.set(6,6);
-				add(bg);
+			var newLayer = new FlxSprite(layer.position[0], layer.position[1]).loadGraphic(Paths.image('stages/${layer.texture}'));
+			newLayer.scrollFactor.set(layer.scroll, layer.scroll);
+			newLayer.scale.set(layer.scale, layer.scale);
+			add(newLayer);
 		}
 	}
 
-	public function getGfVersion(curStage:String)
-	{
-		return switch(curStage)
-		{
-			case "mugen": "no-gf";
-			case "school"|"school-evil": "gf-pixel";
-			default: "gf";
-		}
-	}
-	
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -205,4 +100,24 @@ class Stage extends FlxGroup
 			
 		}
 	}
+}
+
+typedef StageData = {
+	var zoom:Float;
+	var layers:Array<StageLayer>;
+	var positions:StagePositions;
+}
+
+typedef StagePositions = {
+	var gf:Array<Float>;
+	var dad:Array<Float>;
+	var boyfriend:Array<Float>;
+}
+
+typedef StageLayer = {
+	var ?id:String;
+	var texture:String;
+	var position:Array<Float>;
+	var scroll:Float;
+	var scale:Float;
 }

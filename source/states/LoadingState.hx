@@ -94,7 +94,7 @@ class LoadingState extends MusicBeatState
 			addBehind(stageBuild);
 
 			var playerChars:Array<String> = [SONG.player1];
-			var charList:Array<String> = [SONG.player1, SONG.player2, stageBuild.gfVersion];
+			var charList:Array<String> = [SONG.player1, SONG.player2, SONG.gf];
 			for(daEvent in unspawnEvents)
 			{
 				switch(daEvent.eventName)
@@ -108,7 +108,6 @@ class LoadingState extends MusicBeatState
 					case 'Change Stage':
 						stageBuild.reloadStage(daEvent.value1);
 						addBehind(stageBuild);
-						charList.push(stageBuild.gfVersion);
 				}
 			}
 			Logs.print('preloaded stage and hud');
@@ -127,7 +126,7 @@ class LoadingState extends MusicBeatState
 				
 				//Logs.print('preloaded char $i');
 				
-				if(i != stageBuild.gfVersion)
+				if(i != SONG.gf)
 				{
 					var icon = new HealthIcon();
 					icon.setIcon(i, false);
