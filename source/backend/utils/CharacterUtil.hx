@@ -48,11 +48,6 @@ class CharacterUtil
 
 	public static function charList():Array<String>
 	{
-		return [
-			"dad",
-			"gf",
-			"bf",
-			"bf-dead"
-		];
+		return Paths.readDir('characters/', ".json");
 	}
 }

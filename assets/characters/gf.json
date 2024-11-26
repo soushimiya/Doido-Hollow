@@ -1,0 +1,110 @@
+{
+	"anims": [
+		{
+			"animation": "cheer",
+			"prefix": "GF cheer",
+			"fps": 24,
+			"loop": false,
+			"frames": [],
+			"offset": [
+				3,
+				0
+			]
+		},
+		{
+			"animation": "singLEFT",
+			"prefix": "GF left note",
+			"fps": 24,
+			"loop": false,
+			"frames": [],
+			"offset": [
+				0,
+				-19
+			]
+		},
+		{
+			"animation": "singDOWN",
+			"prefix": "GF Down Note",
+			"fps": 24,
+			"loop": false,
+			"frames": [],
+			"offset": [
+				0,
+				-20
+			]
+		},
+		{
+			"animation": "singUP",
+			"prefix": "GF Up Note",
+			"fps": 24,
+			"loop": false,
+			"frames": [],
+			"offset": [
+				0,
+				4
+			]
+		},
+		{
+			"animation": "singRIGHT",
+			"prefix": "GF Right Note",
+			"fps": 24,
+			"loop": false,
+			"frames": [],
+			"offset": [
+				0,
+				-20
+			]
+		},
+		{
+			"animation": "sad",
+			"prefix": "gf sad",
+			"fps": 24,
+			"loop": false,
+			"frames": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+			"offset": [
+				-2,
+				-21
+			]
+		},
+		{
+			"animation": "danceLeft",
+			"prefix": "GF Dancing Beat",
+			"fps": 24,
+			"loop": false,
+			"frames": [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+			"offset": [
+				0,
+				-9
+			]
+		},
+		{
+			"animation": "danceRight",
+			"prefix": "GF Dancing Beat",
+			"fps": 24,
+			"loop": false,
+			"frames": [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+			"offset": [
+				0,
+				-9
+			]
+		}
+	],
+	"globalOffset": [
+		0,
+		0
+	],
+	"cameraOffset": [
+		-102,
+		-142
+	],
+	"ratingsOffset": [
+		0,
+		0
+	],
+	"spritesheet": "gf/GF_assets",
+	"flipX": false,
+	"antialiasing": true,
+	"scale": 1,
+	"idleAnims": ["danceLeft", "danceRight"]
+
+}

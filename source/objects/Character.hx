@@ -56,52 +56,6 @@ class Character extends FlxAnimate
 		// what
 		switch(curChar)
 		{
-			case "gf":
-				spriteType = ATLAS;
-				doidoChar.spritesheet += 'gf/gf-spritemap';
-				doidoChar.anims = [
-					['sad',			'gf sad',			24, false, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]],
-					['danceLeft',	'GF Dancing Beat',	24, false, [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]],
-					['danceRight',	'GF Dancing Beat',	24, false, [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]],
-					
-					['cheer', 		'GF Cheer', 	24, false],
-					['singLEFT', 	'GF left note', 24, false],
-					['singRIGHT', 	'GF Right Note',24, false],
-					['singUP', 		'GF Up Note', 	24, false],
-					['singDOWN', 	'GF Down Note', 24, false],
-				];
-
-				idleAnims = ["danceLeft", "danceRight"];
-				quickDancer = true;
-				flipX = isPlayer;
-
-			case "dad":
-				doidoChar.spritesheet += 'dad/DADDY_DEAREST';
-				doidoChar.anims = [
-					['idle', 		'Dad idle dance', 		24, false],
-					['singUP', 		'Dad Sing Note UP', 	24, false],
-					['singRIGHT', 	'Dad Sing Note RIGHT', 	24, false],
-					['singDOWN', 	'Dad Sing Note DOWN', 	24, false],
-					['singLEFT', 	'Dad Sing Note LEFT', 	24, false],
-
-					['idle-loop', 		'Dad idle dance', 		24, true, [11,12,13,14]],
-					['singUP-loop', 	'Dad Sing Note UP', 	24, true, [3,4,5,6]],
-					['singRIGHT-loop',	'Dad Sing Note RIGHT', 	24, true, [3,4,5,6]],
-					['singLEFT-loop', 	'Dad Sing Note LEFT', 	24, true, [3,4,5,6]],
-				];
-			
-			case "bf-dead":
-				doidoChar.spritesheet += 'bf/BOYFRIEND';
-				doidoChar.anims = [
-					['firstDeath', 		"BF dies", 			24, false],
-					['deathLoop', 		"BF Dead Loop", 	24, true],
-					['deathConfirm', 	"BF Dead confirm", 	24, false],
-				];
-
-				idleAnims = ['firstDeath'];
-				
-				flipX = true;
-
 			default:
 				if (!Paths.fileExists('characters/$curChar.json'))
 				{
@@ -121,6 +75,8 @@ class Character extends FlxAnimate
 						doidoChar.anims.push([daAnim.animation, daAnim.prefix, daAnim.fps, daAnim.loop, daAnim.frames]);
 					else
 						doidoChar.anims.push([daAnim.animation, daAnim.prefix, daAnim.fps, daAnim.loop]);
+
+					addOffset(daAnim.animation, daAnim.offset[0], daAnim.offset[1]);
 				}
 
 				flipX = jsonData.flipX;
@@ -130,10 +86,17 @@ class Character extends FlxAnimate
 
 				scale.set(jsonData.scale, jsonData.scale);
 
-				if (jsonData.idleAnims != null)
+				if (jsonData.idleAnims != null){
+					quickDancer = true;
 					idleAnims = jsonData.idleAnims;
+				}
 				if (jsonData.deathChar != null)
 					deathChar = jsonData.deathChar;
+
+				//Offset shiits
+				globalOffset.set(jsonData.globalOffset[0], jsonData.globalOffset[1]);
+				cameraOffset.set(jsonData.cameraOffset[0], jsonData.cameraOffset[1]);
+				ratingsOffset.set(jsonData.ratingsOffset[0], jsonData.ratingsOffset[1]);
 		}
 
 		if(spriteType != ATLAS)
@@ -189,26 +152,6 @@ class Character extends FlxAnimate
 		{
 			if(!animList.contains(idleAnims[i]))
 				idleAnims[i] = animList[0];
-		}
-		
-		// offset gettin'
-		switch(curChar)
-		{
-			default:
-				try {
-					var charData:DoidoOffsets = cast Paths.json('images/characters/_offsets/${curChar}');
-					
-					for(i in 0...charData.animOffsets.length)
-					{
-						var animData:Array<Dynamic> = charData.animOffsets[i];
-						addOffset(animData[0], animData[1], animData[2]);
-					}
-					globalOffset.set(charData.globalOffset[0], charData.globalOffset[1]);
-					cameraOffset.set(charData.cameraOffset[0], charData.cameraOffset[1]);
-					ratingsOffset.set(charData.ratingsOffset[0], charData.ratingsOffset[1]);
-				} catch(e) {
-					Logs.print('$curChar offsets not found', WARNING);
-				}
 		}
 		
 		playAnim(idleAnims[0]);
