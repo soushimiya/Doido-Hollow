@@ -1,0 +1,153 @@
+{
+	"globalOffset": [
+		0,
+		0
+	],
+	"flipX": true,
+	"spritesheet": "Pico_Basic",
+	"extrasheets": ["characters/Pico_Playable", "characters/Pico_Shooting"],
+	"anims": [
+		{
+			"frames": [],
+			"prefix": "Pico Idle Dance",
+			"fps": 24,
+			"loop": false,
+			"animation": "idle",
+			"offset": [
+				0,
+				0
+			]
+		},
+		{
+			"frames": [],
+			"prefix": "Pico NOTE LEFT0",
+			"fps": 24,
+			"loop": false,
+			"animation": "singLEFT",
+			"offset": [
+				84,
+				-11
+			]
+		},
+		{
+			"frames": [],
+			"prefix": "Pico Down Note0",
+			"fps": 24,
+			"loop": false,
+			"animation": "singDOWN",
+			"offset": [
+				84,
+				-77
+			]
+		},
+		{
+			"frames": [],
+			"prefix": "pico Up note0",
+			"fps": 24,
+			"loop": false,
+			"animation": "singUP",
+			"offset": [
+				21,
+				28
+			]
+		},
+		{
+			"frames": [],
+			"prefix": "Pico Note Right0",
+			"fps": 24,
+			"loop": false,
+			"animation": "singRIGHT",
+			"offset": [
+				-50,
+				0
+			]
+		},
+		{
+			"frames": [],
+			"prefix": "Pico Left Note MISS",
+			"fps": 24,
+			"loop": false,
+			"animation": "singLEFTmiss",
+			"offset": [
+				68,
+				20
+			]
+		},
+		{
+			"frames": [],
+			"prefix": "Pico Down Note MISS",
+			"fps": 24,
+			"loop": false,
+			"animation": "singDOWNmiss",
+			"offset": [
+				80,
+				-40
+			]
+		},
+		{
+			"frames": [],
+			"prefix": "Pico Up Note MISS",
+			"fps": 24,
+			"loop": false,
+			"animation": "singUPmiss",
+			"offset": [
+				29,
+				70
+			]
+		},
+		{
+			"frames": [],
+			"prefix": "Pico Right Note MISS",
+			"fps": 24,
+			"loop": false,
+			"animation": "singRIGHTmiss",
+			"offset": [
+				-55,
+				45
+			]
+		},
+		{
+			"frames": [],
+			"prefix": "Pico Hit Can0",
+			"fps": 24,
+			"loop": false,
+			"animation": "shootMISS",
+			"offset": [
+				0,
+				0
+			]
+		},
+		{
+			"frames": [],
+			"prefix": "Pico Reload0",
+			"fps": 24,
+			"loop": false,
+			"animation": "cock",
+			"offset": [
+				0,
+				0
+			]
+		},
+		{
+			"frames": [],
+			"prefix": "Pico Shoot Hip Full0",
+			"fps": 24,
+			"loop": false,
+			"animation": "shoot",
+			"offset": [
+				300,
+				250
+			]
+		}
+	],
+	"ratingsOffset": [
+		0,
+		0
+	],
+	"cameraOffset": [
+		10,
+		-40
+	],
+	"antialiasing": true,
+	"scale": 1
+}

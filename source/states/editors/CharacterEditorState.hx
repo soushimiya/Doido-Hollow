@@ -201,7 +201,7 @@ class CharacterEditorState extends MusicBeatState
 
 		var charButton = new FlxUIButton(10, 25, curChar, function() {
 			openSubState(new ChooserSubState(charList, CHARACTER, function(pick:String) {
-				Main.switchState(new CharacterEditorState(pick));
+				Main.switchState(new CharacterEditorState(pick, wasPlayState));
 			}));
 		});
 		charButton.resize(125, 20);
