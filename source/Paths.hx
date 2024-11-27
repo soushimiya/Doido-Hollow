@@ -189,7 +189,7 @@ class Paths
 		var arr:Array<String> = [];
 		for(folder in ["scripts", 'songs/$song/scripts'])
 		{
-			for(file in readDir(folder, ".hxc", false))
+			for(file in readDir(folder, ".hx", false))
 				arr.push('$folder/$file');
 		}
 		//trace(arr);

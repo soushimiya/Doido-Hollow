@@ -146,6 +146,13 @@ class PlayState extends MusicBeatState
 		
 		hasModchart = false;
 		validScore = true;
+
+		//old charts support
+		if (SONG.gf == null)
+			SONG.gf = "gf";
+
+		if (SONG.stage == null)
+			SONG.stage = "stage";
 		
 		Timings.init();
 
@@ -186,9 +193,6 @@ class PlayState extends MusicBeatState
 			CoolUtil.playMusic();
 		resetStatics();
 		
-		//old charts support
-		if (SONG.gf == null)
-			SONG.gf = "gf";
 		//if(SONG == null)
 		//	SONG = SongData.loadFromJson("ugh");
 
@@ -197,7 +201,7 @@ class PlayState extends MusicBeatState
 
 		#if !sys
 		// use this to run scripts in HTML5 or other non-sys targets
-		//scriptPaths.push("songs/bopeebo/script.hxc");
+		//scriptPaths.push("songs/bopeebo/script.hx");
 		#end
 
 		for(path in scriptPaths)
@@ -242,7 +246,7 @@ class PlayState extends MusicBeatState
 		callScript("create");
 		
 		stageBuild = new Stage();
-		stageBuild.reloadStageFromSong(SONG.song);
+		stageBuild.reloadStage(SONG.stage);
 		add(stageBuild);
 
 		classicZoom = defaultCamZoom;
@@ -1589,16 +1593,34 @@ class PlayState extends MusicBeatState
 	public function followCamSection(sect:SwagSection):Void
 	{
 		var char:Character = dadStrumline.character.char;
+		var offX = stageBuild.dadCamPos.x;
+		var offY = stageBuild.dadCamPos.y;
 
 		if(sect != null)
 		{
 			if(cameraSection != "none")
+			{
 				char = strToChar(cameraSection).char;
+				switch(cameraSection)
+				{
+					case 'bf'|'boyfriend':
+						offX = stageBuild.bfCamPos.x;
+						offY = stageBuild.bfCamPos.y;
+					case 'gf'|'girlfriend':
+						offX = stageBuild.gfCamPos.x;
+						offY = stageBuild.gfCamPos.y;
+				}
+			}
 			else if(sect.mustHitSection)
+			{
 				char = bfStrumline.character.char;
+
+				offX = stageBuild.bfCamPos.x;
+				offY = stageBuild.bfCamPos.y;
+			}
 		}
 
-		followCamera(char);
+		followCamera(char, offX, offY);
 	}
 
 	public function followCamera(?char:Character, ?offsetX:Float = 0, ?offsetY:Float = 0)
@@ -1628,6 +1650,7 @@ class PlayState extends MusicBeatState
 				Conductor.setBPM(change.bpm);
 		}
 		hudBuild.beatHit(curBeat);
+		stageBuild.beatHit(curBeat);
 		
 		if(curBeat % 4 == 0)
 		{

@@ -97,7 +97,8 @@ class ChartAutoSaveSubState extends MusicBeatSubState
 			speed: SONG.speed,
 			player1: SONG.player1,
 			player2: SONG.player2,
-			gf: SONG.gf
+			gf: SONG.gf,
+			stage: SONG.stage
 		};
 		for(section in SONG.notes)
 		{

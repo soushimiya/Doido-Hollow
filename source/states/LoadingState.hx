@@ -90,7 +90,7 @@ class LoadingState extends MusicBeatState
 			Paths.preloadGraphic('hud/base/healthBar');
 			
 			var stageBuild = new Stage();
-			stageBuild.reloadStageFromSong(SONG.song);
+			stageBuild.reloadStage(SONG.stage);
 			addBehind(stageBuild);
 
 			var playerChars:Array<String> = [SONG.player1];

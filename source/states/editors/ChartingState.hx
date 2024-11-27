@@ -455,6 +455,20 @@ class ChartingState extends MusicBeatState
 			}));
 		});
 		gfButton.resize(125, 20);
+
+		var stageList = Paths.text('stages/stageList').split("\n");
+
+		var weekJsonList = Paths.readDir('stages/', ".json");
+		for(week in weekJsonList)
+			if (!stageList.contains(week))
+				stageList.push(week);
+		
+		var stageDropdown = new FlxUIDropDownMenu(140, 140,
+		FlxUIDropDownMenu.makeStrIdLabelArray(stageList, true), function(value:String)
+		{
+			SONG.stage = stageList[Std.parseInt(value)];
+		});
+		stageDropdown.selectedLabel = SONG.stage;
 		
 		var playTicksBf = new FlxUICheckBox(10, 230, null, null, 'BF Hitsounds', 70);
 		playTicksBf.name = "bf_hitsounds";
@@ -575,9 +589,11 @@ class ChartingState extends MusicBeatState
 		tabSong.add(new FlxText(player1Button.x, player1Button.y - 15, 0, 'Boyfriend:'));
 		tabSong.add(new FlxText(player2Button.x, player2Button.y - 15, 0, 'Opponent:'));
 		tabSong.add(new FlxText(gfButton.x, gfButton.y - 15, 0, 'Girlfriend:'));
+		tabSong.add(new FlxText(stageDropdown.x, stageDropdown.y - 15, 0, '1	:'));
 		tabSong.add(player1Button);
 		tabSong.add(player2Button);
 		tabSong.add(gfButton);
+		tabSong.add(stageDropdown);
 
 
 		/*
