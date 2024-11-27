@@ -1,0 +1,40 @@
+{
+	"songEvents": [
+		[
+			6,
+			8901.0989010989,
+			[
+				[
+					"Play Animation",
+					"dad",
+					"lightCan",
+					"trie"
+				]
+			]
+		],
+		[
+			7,
+			9560.43956043956,
+			[
+				[
+					"Play Animation",
+					"dad",
+					"kickCan",
+					"trie"
+				]
+			]
+		],
+		[
+			7,
+			9890.10989010989,
+			[
+				[
+					"Play Animation",
+					"dad",
+					"kneeCan",
+					"trie"
+				]
+			]
+		]
+	]
+}

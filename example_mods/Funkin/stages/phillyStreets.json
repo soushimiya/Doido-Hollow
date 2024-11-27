@@ -1,0 +1,84 @@
+{
+    "zoom": 0.77,
+
+    "layers": [
+        {
+            "texture": "phillyStreets/phillySkyline",
+            "position": [-545, -273],
+            "scroll": 0.2,
+            "scale": 1
+        },
+        {
+            "texture": "phillyStreets/phillyForegroundCity",
+            "position": [625, 94],
+            "scroll": 0.3,
+            "scale": 1
+        },
+        {
+            "texture": "phillyStreets/phillyConstruction",
+            "position": [1800, 364],
+            "scroll": 0.7,
+            "scale": 1
+        },
+        {
+            "texture": "phillyStreets/phillyHighwayLights",
+            "position": [284, 305],
+            "scroll": 1,
+            "scale": 1
+        },
+        {
+            "texture": "phillyStreets/phillyHighway",
+            "position": [139, 209],
+            "scroll": 1,
+            "scale": 1
+        },
+        {
+            "texture": "phillyStreets/phillySmog",
+            "position": [-6, 245],
+            "scroll": 0.8,
+            "scale": 1
+        },
+        {
+            "id": "phillyTraffic",
+            "texture": "phillyStreets/phillyTraffic",
+            "position": [1840, 608],
+            "scroll": 0.9,
+            "scale": 1,
+            "animations": [
+                {
+                    "name": "togreen",
+                    "prefix": "redtogreen",
+                    "fps": 24,
+                    "loop": false
+                },
+                {
+                    "name": "tored",
+                    "prefix": "greentored",
+                    "fps": 24,
+                    "loop": false
+                }
+            ]
+        },
+        {
+            "texture": "phillyStreets/phillyForeground",
+            "position": [88, 317],
+            "scroll": 1,
+            "scale": 1
+        },
+        {
+            "texture": "phillyStreets/spraycanPile",
+            "position": [920, 1045],
+            "scroll": 1,
+            "scale": 1,
+            "foreground": true
+        }
+    ],
+
+    "positions": {
+        "gf": [1520, 1080],
+        "dad": [920, 1310],
+        "boyfriend": [2151, 1228],
+        "dadCamera": [500, -100],
+        "boyfriendCamera": [-250, 0]
+    }
+}

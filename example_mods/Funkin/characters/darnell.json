@@ -1,0 +1,130 @@
+{
+	"globalOffset": [
+		0,
+		0
+	],
+	"flipX": false,
+	"spritesheet": "darnell",
+	"anims": [
+		{
+			"frames": [],
+			"prefix": "Idle",
+			"fps": 24,
+			"loop": false,
+			"animation": "idle",
+			"offset": [
+				0,
+				0
+			]
+		},
+		{
+			"frames": [],
+			"prefix": "Pose Left",
+			"fps": 24,
+			"loop": false,
+			"animation": "singLEFT",
+			"offset": [
+				1,
+				0
+			]
+		},
+		{
+			"frames": [],
+			"prefix": "Pose Down",
+			"fps": 24,
+			"loop": false,
+			"animation": "singDOWN",
+			"offset": [
+				0,
+				-3
+			]
+		},
+		{
+			"frames": [],
+			"prefix": "Pose Up",
+			"fps": 24,
+			"loop": false,
+			"animation": "singUP",
+			"offset": [
+				8,
+				5
+			]
+		},
+		{
+			"frames": [],
+			"prefix": "Pose Right",
+			"fps": 24,
+			"loop": false,
+			"animation": "singRIGHT",
+			"offset": [
+				4,
+				3
+			]
+		},
+		{
+			"frames": [],
+			"prefix": "Laugh0",
+			"fps": 24,
+			"loop": true,
+			"animation": "laugh",
+			"offset": [
+				0,
+				0
+			]
+		},
+		{
+			"frames": [],
+			"prefix": "Light Can0",
+			"fps": 24,
+			"loop": true,
+			"animation": "lightCan",
+			"offset": [
+				18,
+				0
+			]
+		},
+		{
+			"frames": [],
+			"prefix": "Kick Up0",
+			"fps": 24,
+			"loop": true,
+			"animation": "kickCan",
+			"offset": [
+				15,
+				19
+			]
+		},
+		{
+			"frames": [],
+			"prefix": "Knee Forward0",
+			"fps": 24,
+			"loop": true,
+			"animation": "kneeCan",
+			"offset": [
+				47,
+				19
+			]
+		},
+		{
+			"frames": [],
+			"prefix": "Gets Pissed0",
+			"fps": 24,
+			"loop": true,
+			"animation": "pissed",
+			"offset": [
+				0,
+				0
+			]
+		}
+	],
+	"ratingsOffset": [
+		0,
+		0
+	],
+	"cameraOffset": [
+		0,
+		0
+	],
+	"antialiasing": true,
+	"scale": 1
+}
