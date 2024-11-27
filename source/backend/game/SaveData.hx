@@ -33,7 +33,7 @@ class SaveData
 			["ON", "REDUCED", "OFF"]
 		],
 		"Cutscenes" => [
-			"ON",
+			"FREEPLAY OFF",
 			SELECTOR,
 			"Decides if the song cutscenes should play",
 			["ON", "FREEPLAY OFF", "OFF"],
@@ -49,7 +49,7 @@ class SaveData
 			"Freezes the game when unfocusing the window",
 		],
 		"Countdown on Unpause" => [
-			true,
+			false,
 			CHECKMARK,
 			"Whether you want to have a countdown when unpausing the game",
 		],
@@ -137,7 +137,7 @@ class SaveData
 			"Makes only one rating appear at a time",
 		],
 		"Ratings on HUD" => [
-			true,
+			false,
 			CHECKMARK,
 			"Makes the ratings stick on the HUD"
 		],

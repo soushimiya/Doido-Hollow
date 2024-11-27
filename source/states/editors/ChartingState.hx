@@ -1907,7 +1907,7 @@ class ChartingState extends MusicBeatState
 			if(!note.isHold && note.ID == 1 && playing)
 			{
 				//wtf???? magic number???? lol????
-				if(note.songTime - 0.05 <= Conductor.songPos && !note.gotHit)
+				if(note.songTime - 0.12 <= Conductor.songPos && !note.gotHit)
 				{
 					note.gotHit = true;
 
