@@ -170,11 +170,11 @@ class ChartingState extends MusicBeatState
 		bg.alpha = 0.15;
 		add(bg);
 
-		lilStage = new FlxSprite(32, 400).loadGraphic(Paths.image("menu/chart/lilStage"));
+		lilStage = new FlxSprite(40, 432).loadGraphic(Paths.image("menu/chart/lilStage"));
 		lilStage.scrollFactor.set();
 		add(lilStage);
 
-		lilBf = new FlxSprite(32, 400).loadGraphic(Paths.image("menu/chart/lilBf"), true, 300, 256);
+		lilBf = new FlxSprite(40, 432).loadGraphic(Paths.image("menu/chart/lilBf"), true, 300, 256);
 		lilBf.animation.add("idle", [0, 1], 12, true);
 		lilBf.animation.add("0", [3, 4, 5], 12, false);
 		lilBf.animation.add("1", [6, 7, 8], 12, false);
@@ -188,7 +188,7 @@ class ChartingState extends MusicBeatState
 		lilBf.scrollFactor.set();
 		add(lilBf);
 
-		lilOpp = new FlxSprite(32, 400).loadGraphic(Paths.image("menu/chart/lilOpp"), true, 300, 256);
+		lilOpp = new FlxSprite(40, 432).loadGraphic(Paths.image("menu/chart/lilOpp"), true, 300, 256);
 		lilOpp.animation.add("idle", [0, 1], 12, true);
 		lilOpp.animation.add("0", [3, 4, 5], 12, false);
 		lilOpp.animation.add("1", [6, 7, 8], 12, false);
@@ -252,7 +252,7 @@ class ChartingState extends MusicBeatState
 		add(infoTxt);
 
 
-		controlTxt = new FlxText(0, 0, 0, 
+		controlTxt = new FlxText(10, 0, 0, 
 			"- LMB to select a note
 			- RMB to delete a note
 			- Scroll Wheel, W or S to move the grid bar
@@ -270,11 +270,11 @@ class ChartingState extends MusicBeatState
 		controlTxt.size = 12;
 
 		var controlFormat:FlxTextFormat = new FlxTextFormat();
-		controlFormat.leading = -5;
+		//controlFormat.leading =;
 		controlTxt.addFormat(controlFormat);
 
 		controlTxt.scrollFactor.set();
-		controlTxt.y = FlxG.height - controlTxt.height + 110;
+		controlTxt.y = 100;
 		controlTxt.visible = true;
 		add(controlTxt);
 
@@ -287,7 +287,7 @@ class ChartingState extends MusicBeatState
 		UI_box = new FlxUITabMenu(null, tabs, true);
 		UI_box.resize(300, 300);
 		UI_box.scrollFactor.set();
-		UI_box.x = mainGrid.x + mainGrid.width;
+		UI_box.x = mainGrid.x + mainGrid.width + 70;
 		UI_box.y = 20;
 		add(UI_box);
 
@@ -1712,6 +1712,8 @@ class ChartingState extends MusicBeatState
 				PlayState.songDiff = songDiff;
 				PlayState.SONG = SONG;
 				PlayState.EVENTS = EVENTS;
+				if(FlxG.keys.pressed.SHIFT)
+					
 				Main.switchState(new LoadingState());
 			}
 			

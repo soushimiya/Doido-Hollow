@@ -22,6 +22,7 @@ import backend.utils.CharacterUtil;
 import objects.Character;
 import objects.hud.Rating;
 import states.*;
+import objects.hud.HealthIcon;
 import subStates.editors.ChooserSubState;
 
 class CharacterEditorState extends MusicBeatState
@@ -46,6 +47,9 @@ class CharacterEditorState extends MusicBeatState
 	var camFollow:FlxObject;
 	
 	var ghostAnimButtons:FlxSpriteGroup;
+
+	var healthIcon:HealthIcon;
+	var healthBar:FlxSprite;
 	
 	function reloadGhostButtons()
 	{
@@ -341,6 +345,19 @@ class CharacterEditorState extends MusicBeatState
 		charsTab.add(charButton);
 		charsTab.add(new FlxText(140,10,0,"Ghost: "));
 		charsTab.add(ghostButton);
+
+		healthBar = new FlxSprite(200, FlxG.height - 75).loadGraphic(Paths.image('hud/base/healthBar'));
+		healthBar.scrollFactor.set();
+		add(healthBar);
+		healthBar.cameras = [camHUD];
+
+		healthIcon = new HealthIcon();
+		healthIcon.setIcon(curChar);
+		healthIcon.setPosition(healthBar.x, FlxG.height - 150);
+		add(healthIcon);
+		healthIcon.cameras = [camHUD];
+
+		healthBar.color = HealthIcon.getColor(curChar);
 	}
 	
 	override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>)
