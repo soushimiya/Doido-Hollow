@@ -522,6 +522,7 @@ class PlayState extends MusicBeatState
 			startCountdown();
 
 		callScript("createPost");
+		stageBuild.callScript("createPost");
 	}
 
 	public function startCountdown()

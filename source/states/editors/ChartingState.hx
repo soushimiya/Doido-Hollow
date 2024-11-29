@@ -1712,7 +1712,6 @@ class ChartingState extends MusicBeatState
 				PlayState.songDiff = songDiff;
 				PlayState.SONG = SONG;
 				PlayState.EVENTS = EVENTS;
-				if(FlxG.keys.pressed.SHIFT)
 					
 				Main.switchState(new LoadingState());
 			}

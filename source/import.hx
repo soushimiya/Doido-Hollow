@@ -7,3 +7,7 @@ import backend.system.Logs;
 
 using StringTools;
 using flixel.util.FlxArrayUtil;
+//These are used for hscripts!
+import flixel.addons.display.FlxBackdrop;
+import flixel.util.FlxAxes;
+import openfl.display.BlendMode;
