@@ -28,6 +28,9 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.util.FlxTimer;
+import flixel.addons.display.FlxRuntimeShader;
+import openfl.filters.BitmapFilter;
+import openfl.filters.ShaderFilter;
 import objects.*;
 import objects.hud.*;
 import objects.note.*;
@@ -38,7 +41,6 @@ import states.menu.*;
 import subStates.*;
 
 using StringTools;
-@:access(crowplexus.iris.Iris)
 
 class PlayState extends MusicBeatState
 {
@@ -114,8 +116,9 @@ class PlayState extends MusicBeatState
 	public static var beatCamZoom:Float = 0.0;
 	public static var extraCamZoom:Float = 0.0;
 	public static var forcedCamPos:Null<FlxPoint>;
-	public static var cameraSection:String = "none";
+	public static var forcedCamSection:String = "none";
 	public var camZoomTween:FlxTween;
+	public var curSection:SwagSection;
 
 	public static var camFollow:FlxObject = new FlxObject();
 
@@ -133,6 +136,13 @@ class PlayState extends MusicBeatState
 	var isClassicZoom:Bool = false;
 	var classicZoom:Float = 1.0;
 
+	// This map holds which shaders are loaded, to help with disabling and enabling them in the options!
+	var tempShaders:Map<String,Array<BitmapFilter>> = [
+		"camGame" => [],
+		"camHUD" => [],
+		"camStrum" => []
+	];
+
 	public static function resetStatics()
 	{
 		health = 1;
@@ -141,18 +151,11 @@ class PlayState extends MusicBeatState
 		beatCamZoom = 0.0;
 		extraCamZoom = 0.0;
 		forcedCamPos = null;
-		cameraSection = "none";
+		forcedCamSection = "none";
 		paused = false;
 		
 		hasModchart = false;
 		validScore = true;
-
-		//old charts support
-		if (SONG.gf == null)
-			SONG.gf = "gf";
-
-		if (SONG.stage == null)
-			SONG.stage = "stage";
 		
 		Timings.init();
 
@@ -192,7 +195,6 @@ class PlayState extends MusicBeatState
 		while(FlxG.sound.music.playing)
 			CoolUtil.playMusic();
 		resetStatics();
-		
 		//if(SONG == null)
 		//	SONG = SongData.loadFromJson("ugh");
 
@@ -201,16 +203,16 @@ class PlayState extends MusicBeatState
 
 		#if !sys
 		// use this to run scripts in HTML5 or other non-sys targets
-		//scriptPaths.push("songs/bopeebo/script.hx");
+		//scriptPaths.push("songs/bopeebo/script.hxc");
 		#end
 
 		for(path in scriptPaths)
 		{
 			var scriptConfig:IrisConfig = new IrisConfig(path, true, true);
 			var newScript:Iris = new Iris(Paths.script('$path'), scriptConfig);
-			newScript.interp.parent = this;
 			loadedScripts.push(newScript);
 		}
+		setScript("this", instance);
 
 		unspawnNotes = ChartLoader.getChart(SONG);
 		unspawnEvents = ChartLoader.getEvents(EVENTS);
@@ -220,6 +222,7 @@ class PlayState extends MusicBeatState
 		// adjusting the conductor
 		Conductor.setBPM(SONG.bpm);
 		Conductor.mapBPMChanges(SONG);
+		curSection = SONG.notes[0];
 		
 		// setting up the cameras
 		camGame = new FlxCamera();
@@ -246,7 +249,7 @@ class PlayState extends MusicBeatState
 		callScript("create");
 		
 		stageBuild = new Stage();
-		stageBuild.reloadStage(SONG.stage);
+		stageBuild.reloadStageFromSong(SONG.song);
 		add(stageBuild);
 
 		classicZoom = defaultCamZoom;
@@ -261,7 +264,7 @@ class PlayState extends MusicBeatState
 		*	remember to put false after "new char" for non-singers (like gf)
 		*	so it doesnt reload the icons
 		*/
-		gf = new CharGroup(false, SONG.gf);
+		gf = new CharGroup(false, stageBuild.gfVersion);
 		dad = new CharGroup(false, SONG.player2);
 		boyfriend = new CharGroup(true, SONG.player1);
 
@@ -278,16 +281,18 @@ class PlayState extends MusicBeatState
 		
 		// basic layering ig
 		var addList:Array<FlxBasic> = [];
-
-		if(dad.curChar.startsWith("gf") && dad.curChar == gf.curChar && gf.visible)
-		{
-			dad.setPos(stageBuild.gfPos.x, stageBuild.gfPos.y);
-			gf.visible = false;
-		}
 		
 		for(char in characters)
+		{
+			if(char.curChar == gf.curChar && char != gf && gf.visible)
+			{
+				changeChar(char, gf.curChar);
+				char.setPos(stageBuild.gfPos.x, stageBuild.gfPos.y);
+				gf.visible = false;
+			}
+			
 			addList.push(char);
-
+		}
 		addList.push(stageBuild.foreground);
 		
 		for(item in addList)
@@ -522,7 +527,6 @@ class PlayState extends MusicBeatState
 			startCountdown();
 
 		callScript("createPost");
-		stageBuild.callScript("createPost");
 	}
 
 	public function startCountdown()
@@ -759,7 +763,7 @@ class PlayState extends MusicBeatState
 			}
 			// regular splashes
 			var noteDiff:Float = Math.abs(note.noteDiff());
-			if(noteDiff <= Timings.getTimings("perfect")[1] || strumline.botplay)
+			if(noteDiff <= Timings.getTimings("sick")[1] || strumline.botplay)
 				strumline.playSplash(note);
 		}
 
@@ -1010,9 +1014,9 @@ class PlayState extends MusicBeatState
 		return switch(str.toLowerCase())
 		{
 			default: camGame;
-			case 'camhud': camHUD;
-			case 'camstrum': camStrum;
-			case 'camother': camOther;
+			case 'camhud'|'hud': camHUD;
+			case 'camstrum'|'strum': camStrum;
+			//case 'camother'|'other': camOther; // meant for transitions only
 		}
 	}
 	
@@ -1300,7 +1304,7 @@ class PlayState extends MusicBeatState
 							if(noteDiff <= minTiming && !note.missed && !note.gotHit && note.noteData == i)
 							{
 								if(note.mustMiss
-								&& Conductor.songPos >= note.songTime + Timings.getTimings("perfect")[1])
+								&& Conductor.songPos >= note.songTime + Timings.getTimings("sick")[1])
 								{
 									continue;
 								}
@@ -1372,20 +1376,19 @@ class PlayState extends MusicBeatState
 		if(startedCountdown)
 		{
 			var lastSteps:Int = 0;
-			var curSect:SwagSection = null;
 			for(section in SONG.notes)
 			{
 				if(curStep >= lastSteps)
-					curSect = section;
+					curSection = section;
 
 				lastSteps += section.lengthInSteps;
 			}
-			if(curSect != null)
+			if(curSection != null)
 			{
-				followCamSection(curSect);
+				followCamSection(curSection);
 
 				if(SONG.song == "tutorial")
-					extraCamZoom = CoolUtil.camZoomLerp(extraCamZoom, curSect.mustHitSection ? 0 : 0.5, 3);
+					extraCamZoom = CoolUtil.camZoomLerp(extraCamZoom, curSection.mustHitSection ? 0 : 0.5, 3);
 			}
 		}
 		// stuff
@@ -1594,34 +1597,23 @@ class PlayState extends MusicBeatState
 	public function followCamSection(sect:SwagSection):Void
 	{
 		var char:Character = dadStrumline.character.char;
-		var offX = stageBuild.dadCamPos.x;
-		var offY = stageBuild.dadCamPos.y;
+		var offset:FlxPoint = stageBuild.dadCam;
 
 		if(sect != null)
 		{
-			if(cameraSection != "none")
-			{
-				char = strToChar(cameraSection).char;
-				switch(cameraSection)
-				{
-					case 'bf'|'boyfriend':
-						offX = stageBuild.bfCamPos.x;
-						offY = stageBuild.bfCamPos.y;
-					case 'gf'|'girlfriend':
-						offX = stageBuild.gfCamPos.x;
-						offY = stageBuild.gfCamPos.y;
-				}
-			}
+			if(forcedCamSection != "none")
+				char = strToChar(forcedCamSection).char;
 			else if(sect.mustHitSection)
-			{
 				char = bfStrumline.character.char;
-
-				offX = stageBuild.bfCamPos.x;
-				offY = stageBuild.bfCamPos.y;
-			}
 		}
 
-		followCamera(char, offX, offY);
+		if(char == boyfriend.char)
+			offset = stageBuild.bfCam;
+		else if(char == gf.char)
+			offset = stageBuild.gfCam;
+
+
+		followCamera(char, offset.x, offset.y);
 	}
 
 	public function followCamera(?char:Character, ?offsetX:Float = 0, ?offsetY:Float = 0)
@@ -1651,7 +1643,6 @@ class PlayState extends MusicBeatState
 				Conductor.setBPM(change.bpm);
 		}
 		hudBuild.beatHit(curBeat);
-		stageBuild.beatHit(curBeat);
 		
 		if(curBeat % 4 == 0)
 		{
@@ -1796,7 +1787,8 @@ class PlayState extends MusicBeatState
 
 	override function onFocusLost():Void
 	{
-		pauseSong();
+		if(SaveData.data.get("Unfocus Pause"))
+			pauseSong();
 		super.onFocusLost();
 	}
 
@@ -1808,6 +1800,7 @@ class PlayState extends MusicBeatState
 		CoolUtil.activateTimers(false);
 		discordUpdateTime = 0.0;
 		openSubState(new PauseSubState());
+		callScript("onPause");
 	}
 	
 	public var isDead:Bool = false;
@@ -1864,7 +1857,9 @@ class PlayState extends MusicBeatState
 		if(stageBuild.curStage != newStage)
 			stageBuild.reloadStage(newStage);
 		
+		gf.curChar = stageBuild.gfVersion;
 		gf.setPos(stageBuild.gfPos.x, stageBuild.gfPos.y);
+		gf.reload();
 
 		dad.setPos(stageBuild.dadPos.x, stageBuild.dadPos.y);
 
@@ -1907,6 +1902,10 @@ class PlayState extends MusicBeatState
 
 		switch(option)
 		{
+			case 'Shaders':
+				for(i in ["camGame", "camHUD", "camStrum"])
+					stringToCam(i).filters = (SaveData.data.get("Shaders") ? tempShaders.get(i) : []);
+
 			case 'Song Offset':
 				for(note in unspawnNotes)
 					note.setSongOffset();
@@ -1953,21 +1952,6 @@ class PlayState extends MusicBeatState
 		else
 			return [strumPos[0] - strumPos[1], strumPos[0] + strumPos[1]];
 	}
-
-	public function callScript(fun:String, ?args:Array<Dynamic>)
-	{
-		for(script in loadedScripts) {
-			@:privateAccess {
-				var ny: Dynamic = script.interp.variables.get(fun);
-				try {
-					if(ny != null && Reflect.isFunction(ny))
-						script.call(fun, args);
-				} catch(e) {
-					Logs.print('error parsing script: ' + e, ERROR);
-				}
-			}
-		}
-	}
 	
 	// substates also use this
 	public static function sendToMenu()
@@ -1992,11 +1976,30 @@ class PlayState extends MusicBeatState
 		EVENTS = SongData.loadEventsJson(song, songDiff);
 	}
 
+	public function getCamShader(key:String):ShaderFilter
+	{
+		var shaderArr:Array<String> = [null, null];
+		shaderArr[key.endsWith('.frag') ? 0 : 1] = Paths.shader(key);
+
+		var runtime:FlxRuntimeShader = new FlxRuntimeShader(shaderArr[0], shaderArr[1]);
+		return new ShaderFilter(runtime);
+	}
+
+	public function setCamShader(shaders:Array<BitmapFilter>, cam:String = "camGame") {
+		if(SaveData.data.get("Shaders"))
+			stringToCam(cam).filters = shaders;
+
+		tempShaders.set(cam, shaders);
+	}
+
 	function preloadEvents(unspawnEvents:Array<EventNote>) {
 		for (event in unspawnEvents) {
 			switch(event.eventName) {
 				case 'Change Character':
 					strToChar(event.value1).addChar(event.value2);
+	
+				case 'Change Stage':
+					gf.addChar(stageBuild.getGfVersion(event.value1));
 			}
 		}
 
@@ -2101,9 +2104,47 @@ class PlayState extends MusicBeatState
 				cam.shake(intensity, duration);
 			
 			case "Change Cam Section":
-				cameraSection = daEvent.value1;
+				forcedCamSection = daEvent.value1;
+			
+			case "Change Cam Angle":
+				var cam:FlxCamera = camGame;
+				var newAngle:Float = CoolUtil.stringToFloat(daEvent.value1);
+				var duration:Float = CoolUtil.stringToFloat(daEvent.value2);
+				
+				if(cam._dynamic.get("angleTween") != null)
+					cast(cam._dynamic.get("angleTween"), FlxTween).cancel();
+
+				if(duration > 0.0)
+					cam._dynamic.set("angleTween", FlxTween.tween(
+						cam, {angle: newAngle},
+						duration * Conductor.stepCrochet / 1000, {
+							ease: CoolUtil.stringToEase(daEvent.value3),
+						}
+					));
+				else
+					cam.angle = newAngle;
 		}
 
 		callScript("onEventHit", [daEvent.eventName, daEvent.value1, daEvent.value2, daEvent.value3]);
+	}
+
+	public function callScript(fun:String, ?args:Array<Dynamic>)
+	{
+		for(script in loadedScripts) {
+			@:privateAccess {
+				var ny: Dynamic = script.interp.variables.get(fun);
+				try {
+					if(ny != null && Reflect.isFunction(ny))
+						script.call(fun, args);
+				} catch(e) {
+					Logs.print('error parsing script: ' + e, ERROR);
+				}
+			}
+		}
+	}
+	public function setScript(name:String, value:Dynamic, allowOverride:Bool = true)
+	{
+		for(script in loadedScripts)
+			script.set(name, value, allowOverride);
 	}
 }

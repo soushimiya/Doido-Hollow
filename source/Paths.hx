@@ -10,6 +10,7 @@ import openfl.utils.Assets;
 import openfl.display.BitmapData;
 import openfl.media.Sound;
 import states.PlayState;
+import tjson.TJSON;
 
 using StringTools;
 
@@ -46,7 +47,11 @@ class Paths
 	}
 	
 	public static function fileExists(filePath:String, ?library:String):Bool
-		return Assets.exists(getPath(filePath, library));
+		#if desktop
+		return sys.FileSystem.exists(getPath(filePath, library));
+		#else
+		return openfl.Assets.exists(getPath(filePath, library));
+		#end
 	
 	public static function getSound(key:String, ?library:String):Sound
 	{
@@ -58,7 +63,11 @@ class Paths
 			}
 			Logs.print('created new sound $key');
 			renderedSounds.set(key,
-				Assets.getSound(getPath('$key.ogg', library))
+				#if desktop
+				Sound.fromFile(getPath('$key.ogg', library))
+				#else
+				openfl.Assets.getSound(getPath('$key.ogg', library))
+				#end
 			);
 		}
 		return renderedSounds.get(key);
@@ -72,7 +81,11 @@ class Paths
 		{
 			if(!renderedGraphics.exists(key))
 			{
-				var bitmap = Assets.getBitmapData(path);
+				#if desktop
+				var bitmap = BitmapData.fromFile(path);
+				#else
+				var bitmap = openfl.Assets.getBitmapData(path);
+				#end
 				
 				var newGraphic = FlxGraphic.fromBitmapData(bitmap, false, key, false);
 				Logs.print('created new image $key');
@@ -105,8 +118,8 @@ class Paths
 			clearCount.push(key);
 			
 			renderedGraphics.remove(key);
-			if(Assets.cache.hasBitmapData(key))
-				Assets.cache.removeBitmapData(key);
+			if(openfl.Assets.cache.hasBitmapData(key))
+				openfl.Assets.cache.removeBitmapData(key);
 			
 			FlxG.bitmap.remove(graphic);
 			graphic.dump();
@@ -123,7 +136,7 @@ class Paths
 			var obj = FlxG.bitmap._cache.get(key);
 			if(obj != null && !renderedGraphics.exists(key))
 			{
-				Assets.cache.removeBitmapData(key);
+				openfl.Assets.cache.removeBitmapData(key);
 				FlxG.bitmap._cache.remove(key);
 				obj.dump();
 				obj.destroy();
@@ -176,20 +189,27 @@ class Paths
 		return Assets.getText(getPath('$key.txt', library)).trim();
 
 	public static function getContent(filePath:String, ?library:String):String
-		return Assets.getText(getPath(filePath, library));
+		#if desktop
+		return sys.io.File.getContent(getPath(filePath, library));
+		#else
+		return openfl.Assets.getText(getPath(filePath, library));
+		#end
 
 	public static function json(key:String, ?library:String):Dynamic
-		return haxe.Json.parse(getContent('$key.json', library).trim());
+		return TJSON.parse(getContent('$key.json', library).trim());
 
 	public static function script(key:String, ?library:String):String
 		return getContent('$key', library);
+
+	public static function shader(key:String, ?library:String):Null<String>
+		return getContent('shaders/$key', library);
 
 	public static function getScriptArray(?song:String):Array<String>
 	{
 		var arr:Array<String> = [];
 		for(folder in ["scripts", 'songs/$song/scripts'])
 		{
-			for(file in readDir(folder, ".hx", false))
+			for(file in readDir(folder, [".hx", ".hxc"], false))
 				arr.push('$folder/$file');
 		}
 		//trace(arr);
@@ -227,48 +247,34 @@ class Paths
 		return frames;
 	}
 		
-	public static function readDir(dir:String, ?type:String, ?removeType:Bool = true, ?library:String):Array<String>
+	public static function readDir(dir:String, ?typeArr:Array<String>, ?removeType:Bool = true, ?library:String):Array<String>
 	{
-		var theList:Array<String> = [];
+		var swagList:Array<String> = [];
 		
 		try {
 			#if desktop
 			var rawList = sys.FileSystem.readDirectory(getPath(dir, library));
-
-			for (mod in backend.modding.ModHandler.loadedMods){
-				if (sys.FileSystem.exists('mods/$mod/$dir')){
-					if(rawList == null){ rawList = []; }
-					var modfile = sys.FileSystem.readDirectory('mods/$mod/$dir');
-					for (file in modfile){
-						if (!rawList.contains(file)){
-							rawList.push(file);
+			for(i in 0...rawList.length)
+			{
+				if(typeArr?.length > 1)
+				{
+					for(type in typeArr) {
+						if(rawList[i].endsWith(type)) {
+							// cleans it
+							if(removeType)
+								rawList[i] = rawList[i].replace(type, "");
+							swagList.push(rawList[i]);
 						}
 					}
 				}
-			}
-
-			for(i in 0...rawList.length)
-			{
-				if(type != null) {
-					// 
-					if(!rawList[i].endsWith(type))
-						rawList[i] = "";
-					
-					// cleans it
-					if(removeType)
-						rawList[i] = rawList[i].replace(type, "");
-				}
-				
-				// adds it to the real list if its not empty
-				if(rawList[i] != "")
-					theList.push(rawList[i]);
+				else
+					swagList.push(rawList[i]);
 			}
 			#end
 		} catch(e) {}
 		
-		
-		Logs.print(theList);
-		return theList;
+		Logs.print('read dir ${(swagList.length > 0) ? '$swagList' : 'EMPTY'} at ${getPath(dir, library)}');
+		return swagList;
 	}
 
 	// preload stuff for playstate
