@@ -42,6 +42,7 @@ import subStates.*;
 
 using StringTools;
 
+@:access(crowplexus.iris.Iris)
 class PlayState extends MusicBeatState
 {
 	// song stuff
@@ -156,6 +157,13 @@ class PlayState extends MusicBeatState
 		
 		hasModchart = false;
 		validScore = true;
+
+		//old charts support
+		if (SONG.gf == null)
+			SONG.gf = "gf";
+
+		if (SONG.stage == null)
+			SONG.stage = "stage";
 		
 		Timings.init();
 
@@ -203,16 +211,16 @@ class PlayState extends MusicBeatState
 
 		#if !sys
 		// use this to run scripts in HTML5 or other non-sys targets
-		//scriptPaths.push("songs/bopeebo/script.hxc");
+		//scriptPaths.push("songs/bopeebo/script.hx");
 		#end
 
 		for(path in scriptPaths)
 		{
 			var scriptConfig:IrisConfig = new IrisConfig(path, true, true);
 			var newScript:Iris = new Iris(Paths.script('$path'), scriptConfig);
+			newScript.interp.parent = this;
 			loadedScripts.push(newScript);
 		}
-		setScript("this", instance);
 
 		unspawnNotes = ChartLoader.getChart(SONG);
 		unspawnEvents = ChartLoader.getEvents(EVENTS);
@@ -249,7 +257,7 @@ class PlayState extends MusicBeatState
 		callScript("create");
 		
 		stageBuild = new Stage();
-		stageBuild.reloadStageFromSong(SONG.song);
+		stageBuild.reloadStage(SONG.stage);
 		add(stageBuild);
 
 		classicZoom = defaultCamZoom;
@@ -264,7 +272,7 @@ class PlayState extends MusicBeatState
 		*	remember to put false after "new char" for non-singers (like gf)
 		*	so it doesnt reload the icons
 		*/
-		gf = new CharGroup(false, stageBuild.gfVersion);
+		gf = new CharGroup(false, SONG.gf);
 		dad = new CharGroup(false, SONG.player2);
 		boyfriend = new CharGroup(true, SONG.player1);
 
@@ -281,18 +289,17 @@ class PlayState extends MusicBeatState
 		
 		// basic layering ig
 		var addList:Array<FlxBasic> = [];
-		
-		for(char in characters)
-		{
-			if(char.curChar == gf.curChar && char != gf && gf.visible)
-			{
-				changeChar(char, gf.curChar);
-				char.setPos(stageBuild.gfPos.x, stageBuild.gfPos.y);
-				gf.visible = false;
-			}
-			
+
+		for(char in characters) {
 			addList.push(char);
 		}
+		
+		if(dad.curChar.startsWith("gf") && dad.curChar == gf.curChar && gf.visible)
+		{
+			dad.setPos(stageBuild.gfPos.x, stageBuild.gfPos.y);
+			gf.visible = false;
+		}
+
 		addList.push(stageBuild.foreground);
 		
 		for(item in addList)
@@ -527,6 +534,7 @@ class PlayState extends MusicBeatState
 			startCountdown();
 
 		callScript("createPost");
+		stageBuild.callScript("createPost");
 	}
 
 	public function startCountdown()
@@ -763,7 +771,7 @@ class PlayState extends MusicBeatState
 			}
 			// regular splashes
 			var noteDiff:Float = Math.abs(note.noteDiff());
-			if(noteDiff <= Timings.getTimings("sick")[1] || strumline.botplay)
+			if(noteDiff <= Timings.getTimings("perfect")[1] || strumline.botplay)
 				strumline.playSplash(note);
 		}
 
@@ -1304,7 +1312,7 @@ class PlayState extends MusicBeatState
 							if(noteDiff <= minTiming && !note.missed && !note.gotHit && note.noteData == i)
 							{
 								if(note.mustMiss
-								&& Conductor.songPos >= note.songTime + Timings.getTimings("sick")[1])
+								&& Conductor.songPos >= note.songTime + Timings.getTimings("perfect")[1])
 								{
 									continue;
 								}
@@ -1643,6 +1651,7 @@ class PlayState extends MusicBeatState
 				Conductor.setBPM(change.bpm);
 		}
 		hudBuild.beatHit(curBeat);
+		stageBuild.beatHit(curBeat);
 		
 		if(curBeat % 4 == 0)
 		{
@@ -1857,18 +1866,13 @@ class PlayState extends MusicBeatState
 		if(stageBuild.curStage != newStage)
 			stageBuild.reloadStage(newStage);
 		
-		gf.curChar = stageBuild.gfVersion;
+		gf.curChar = SONG.gf;
 		gf.setPos(stageBuild.gfPos.x, stageBuild.gfPos.y);
 		gf.reload();
 
 		dad.setPos(stageBuild.dadPos.x, stageBuild.dadPos.y);
 
 		boyfriend.setPos(stageBuild.bfPos.x, stageBuild.bfPos.y);
-
-		switch(newStage)
-		{
-			default: // add custom stuff here
-		}
 	}
 
 	// options substate
@@ -1997,9 +2001,6 @@ class PlayState extends MusicBeatState
 			switch(event.eventName) {
 				case 'Change Character':
 					strToChar(event.value1).addChar(event.value2);
-	
-				case 'Change Stage':
-					gf.addChar(stageBuild.getGfVersion(event.value1));
 			}
 		}
 

@@ -68,6 +68,12 @@ class CharacterUtil
 
 	public static function charList():Array<String>
 	{
-		return Paths.readDir('characters/', ".json");
+		final readedDir = Paths.readDir('characters/', [".json"]);
+		var returnShit:Array<String> = [];
+		for (file in readedDir)
+			if (file.endsWith(".json"))
+				returnShit.push(file.split(".json")[0]);
+
+		return returnShit;
 	}
 }

@@ -66,17 +66,18 @@ class FreeplayState extends MusicBeatState
 		// adding songs
 		var weekPushList = Paths.text('weeks/weekList').split("\n");
 
-		var weekJsonList = Paths.readDir('weeks/', ".json");
+		var weekJsonList = Paths.readDir('weeks/', [".json"]);
 		for(week in weekJsonList)
-			if (!weekPushList.contains(week))
-				weekPushList.push(week);
+			if (!weekPushList.contains(week.split(".json")[0]) && week.endsWith(".json"))
+				weekPushList.push(week.split(".json")[0]);
 		
 		for(week in weekPushList)
 		{
-			var week:FunkyWeek = Paths.json('weeks/$week');
-			if(week.onlyStory) continue;
+			trace(week);
+			var weekd:FunkyWeek = Paths.json('weeks/$week');
+			if(weekd.onlyStory) continue;
 
-			for(song in week.songs){
+			for(song in weekd.songs){
 				var meta:SongMeta = Paths.json('songs/$song/meta');
 				addSong(song, meta.icon, meta.difficulties, meta.displayName);
 			}

@@ -10,7 +10,8 @@ import openfl.utils.Assets;
 import openfl.display.BitmapData;
 import openfl.media.Sound;
 import states.PlayState;
-import tjson.TJSON;
+import haxe.Json;
+import backend.modding.ModHandler;
 
 using StringTools;
 
@@ -47,11 +48,7 @@ class Paths
 	}
 	
 	public static function fileExists(filePath:String, ?library:String):Bool
-		#if desktop
-		return sys.FileSystem.exists(getPath(filePath, library));
-		#else
 		return openfl.Assets.exists(getPath(filePath, library));
-		#end
 	
 	public static function getSound(key:String, ?library:String):Sound
 	{
@@ -63,11 +60,7 @@ class Paths
 			}
 			Logs.print('created new sound $key');
 			renderedSounds.set(key,
-				#if desktop
-				Sound.fromFile(getPath('$key.ogg', library))
-				#else
 				openfl.Assets.getSound(getPath('$key.ogg', library))
-				#end
 			);
 		}
 		return renderedSounds.get(key);
@@ -81,11 +74,7 @@ class Paths
 		{
 			if(!renderedGraphics.exists(key))
 			{
-				#if desktop
-				var bitmap = BitmapData.fromFile(path);
-				#else
 				var bitmap = openfl.Assets.getBitmapData(path);
-				#end
 				
 				var newGraphic = FlxGraphic.fromBitmapData(bitmap, false, key, false);
 				Logs.print('created new image $key');
@@ -186,17 +175,17 @@ class Paths
 		return getPath('fonts/$key', library);
 
 	public static function text(key:String, ?library:String):String
-		return Assets.getText(getPath('$key.txt', library)).trim();
+		return Assets.getText(getPath('$key.txt', library));
 
 	public static function getContent(filePath:String, ?library:String):String
 		#if desktop
-		return sys.io.File.getContent(getPath(filePath, library));
+		return openfl.Assets.getText(getPath(filePath, library));
 		#else
 		return openfl.Assets.getText(getPath(filePath, library));
 		#end
 
 	public static function json(key:String, ?library:String):Dynamic
-		return TJSON.parse(getContent('$key.json', library).trim());
+		return Json.parse(getContent('$key.json', library));
 
 	public static function script(key:String, ?library:String):String
 		return getContent('$key', library);
@@ -269,6 +258,29 @@ class Paths
 				}
 				else
 					swagList.push(rawList[i]);
+			}
+			//Push mods folder too
+			for (mod in ModHandler.loadedMods)
+			{
+				var rawList = sys.FileSystem.readDirectory('mods/$mod/' + getPath(dir, library).split("assets/")[1]);
+				for(i in 0...rawList.length)
+				{
+					if(typeArr?.length > 1)
+					{
+						for(type in typeArr) {
+							if(rawList[i].endsWith(type)) {
+								// cleans it
+								if(removeType)
+									rawList[i] = rawList[i].replace(type, "");
+								if (!swagList.contains(rawList[i]))
+									swagList.push(rawList[i]);
+							}
+						}
+					}
+					else
+						if (!swagList.contains(rawList[i]))
+							swagList.push(rawList[i]);
+				}
 			}
 			#end
 		} catch(e) {}

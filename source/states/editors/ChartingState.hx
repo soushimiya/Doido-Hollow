@@ -493,7 +493,7 @@ class ChartingState extends MusicBeatState
 
 		var stageList = Paths.text('stages/stageList').split("\n");
 
-		var weekJsonList = Paths.readDir('stages/', ".json");
+		var weekJsonList = Paths.readDir('stages/', [".json"]);
 		for(week in weekJsonList)
 			if (!stageList.contains(week))
 				stageList.push(week);

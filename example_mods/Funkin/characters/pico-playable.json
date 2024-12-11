@@ -1,11 +1,14 @@
 {
+	"extrasheets": [
+		"characters/Pico_Playable",
+		"characters/Pico_Shooting"
+	],
 	"globalOffset": [
 		0,
 		0
 	],
 	"flipX": true,
 	"spritesheet": "Pico_Basic",
-	"extrasheets": ["characters/Pico_Playable", "characters/Pico_Shooting"],
 	"anims": [
 		{
 			"frames": [],
@@ -124,8 +127,8 @@
 			"loop": false,
 			"animation": "cock",
 			"offset": [
-				0,
-				0
+				-40,
+				-10
 			]
 		},
 		{
@@ -135,8 +138,8 @@
 			"loop": false,
 			"animation": "shoot",
 			"offset": [
-				300,
-				250
+				233,
+				230
 			]
 		}
 	],
