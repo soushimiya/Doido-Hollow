@@ -14,9 +14,10 @@ import backend.song.SongData;
 import objects.menu.AlphabetMenu;
 import objects.hud.HealthIcon;
 import states.*;
-import states.editors.ChartingState;
+import states.editors.legacy.ChartingState as LegacyChartingState;
 import subStates.menu.DeleteScoreSubState;
 import backend.song.Timings;
+import flixel.util.FlxStringUtil;
 
 using StringTools;
 
@@ -111,6 +112,9 @@ class FreeplayState extends MusicBeatState
 		scoreCounter = new ScoreCounter();
 		add(scoreCounter);
 
+		#if TOUCH_CONTROLS
+		createPad("reset");
+		#else
 		var resetTxt = new FlxText(0, 0, 0, "PRESS RESET TO DELETE SONG SCORE");
 		resetTxt.setFormat(Main.gFont, 28, 0xFFFFFFFF, RIGHT);
 		var resetBg = new FlxSprite().makeGraphic(
@@ -125,6 +129,7 @@ class FreeplayState extends MusicBeatState
 		resetTxt.y = resetBg.y + 4;
 		add(resetBg);
 		add(resetTxt);
+		#end
 
 		changeSelection();
 	}
@@ -166,14 +171,14 @@ class FreeplayState extends MusicBeatState
 					Main.switchState(new LoadingState());
 				else
 				{
-					if(ChartingState.SONG.song != PlayState.SONG.song)
-						ChartingState.curSection = 0;
+					if(LegacyChartingState.SONG.song != PlayState.SONG.song)
+						LegacyChartingState.curSection = 0;
 
-					ChartingState.songDiff = PlayState.songDiff;
-					ChartingState.SONG   = PlayState.SONG;
-					ChartingState.EVENTS = PlayState.EVENTS;
+					LegacyChartingState.songDiff = PlayState.songDiff;
+					LegacyChartingState.SONG   = PlayState.SONG;
+					LegacyChartingState.EVENTS = PlayState.EVENTS;
 		
-					Main.switchState(new ChartingState());
+					Main.switchState(new LegacyChartingState());
 				}
 			}
 			catch(e)
@@ -247,6 +252,7 @@ class FreeplayState extends MusicBeatState
 		scoreCounter.updateDisplay(curSong.name, curSong.diffs[curDiff]);
 	}
 }
+
 /*
 *	instead of it being separate objects in FreeplayState
 *	its just a bunch of stuff inside an FlxGroup
@@ -289,7 +295,7 @@ class ScoreCounter extends FlxGroup
 		super.update(elapsed);
 		text.text = "";
 
-		text.text +=   "HIGHSCORE: " + Math.floor(lerpValues.score);
+		text.text +=   "HIGHSCORE: " + FlxStringUtil.formatMoney(Math.floor(lerpValues.score), false, true);
 		text.text += "\nACCURACY:  " +(Math.floor(lerpValues.accuracy * 100) / 100) + "%" + ' [$rank]';
 		text.text += "\nMISSES:    " + Math.floor(lerpValues.misses);
 
@@ -315,11 +321,14 @@ class ScoreCounter extends FlxGroup
 		bg.scale.y = ((text.height + diffTxt.height + 8) / 32);
 		bg.updateHitbox();
 
-		//bg.y = 0;
+		#if TOUCH_CONTROLS
+		bg.y = FlxG.height - bg.height;
+		#end
+
 		bg.x = FlxG.width - bg.width;
 
 		text.x = FlxG.width - text.width - 4;
-		text.y = 4;
+		text.y = bg.y + 4;
 		
 		diffTxt.x = bg.x + bg.width / 2 - diffTxt.width / 2;
 		diffTxt.y = text.y + text.height;

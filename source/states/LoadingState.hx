@@ -94,7 +94,7 @@ class LoadingState extends MusicBeatState
 			addBehind(stageBuild);
 
 			var playerChars:Array<String> = [SONG.player1];
-			var charList:Array<String> = [SONG.player1, SONG.player2, SONG.gf];
+			var charList:Array<String> = [SONG.player1, SONG.player2, SONG.gfVersion];
 			for(daEvent in unspawnEvents)
 			{
 				switch(daEvent.eventName)
@@ -124,9 +124,7 @@ class LoadingState extends MusicBeatState
 					addBehind(dead);
 				}
 				
-				//Logs.print('preloaded char $i');
-				
-				if(i != SONG.gf)
+				if(i != SONG.gfVersion)
 				{
 					var icon = new HealthIcon();
 					icon.setIcon(i, false);
@@ -143,6 +141,7 @@ class LoadingState extends MusicBeatState
 			if(SONG.needsVoices)
 			{
 				Paths.preloadSound(Paths.songPath(SONG.song, 'Voices', songDiff, '-player'));
+				
 				// opponent voices
 				var oppPath:String = Paths.songPath(SONG.song, 'Voices', songDiff, '-opp');
 				if(oppPath.endsWith('-opp'))

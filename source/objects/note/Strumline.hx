@@ -38,10 +38,10 @@ class Strumline extends FlxGroup
 		
 		allNotes = new FlxTypedGroup<Note>();
 		
-		add(holdGroup 	= new FlxTypedGroup<Note>());
 		add(strumGroup 	= new FlxTypedGroup<StrumNote>());
-		add(splashGroup = new FlxTypedGroup<SplashNote>());
+		add(holdGroup 	= new FlxTypedGroup<Note>());
 		add(coverGroup 	= new FlxTypedGroup<SplashNote>());
+		add(splashGroup = new FlxTypedGroup<SplashNote>());
 		add(noteGroup 	= new FlxTypedGroup<Note>());
 		
 		for(i in 0...4)
@@ -94,7 +94,6 @@ class Strumline extends FlxGroup
 			var splash = new SplashNote();
 			splash.updateData(note);
 			splashGroup.add(splash);
-			//Logs.print('added ${note.strumlineID} $splashName lol');
 		}
 		// preloading covers
 		if(note.children.length > 0)
@@ -108,7 +107,6 @@ class Strumline extends FlxGroup
 				splash.updateData(note.children[note.children.length - 1]);
 				coverGroup.add(splash);
 				splash.destroy();
-				//Logs.print('added cover ${note.strumlineID} $splashName');
 			}
 		}
 	}
@@ -138,7 +136,7 @@ class Strumline extends FlxGroup
 		else
 		{
 			if(!SaveData.data.get("Hold Splashes")) return;
-			//Logs.print('did it work?');
+
 			var splash = new SplashNote(true);
 			splash.holdStrum = thisStrum;
 			splash.updateData(note);

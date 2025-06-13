@@ -1,16 +1,28 @@
 package backend.game;
 
-import flixel.FlxBasic;
+import flixel.FlxCamera;
 import flixel.FlxState;
-import flixel.FlxSprite;
 import flixel.addons.ui.FlxUIState;
 import flixel.addons.ui.FlxUISubState;
 import flixel.group.FlxGroup;
 import backend.song.Conductor;
 import crowplexus.iris.Iris;
 
+#if TOUCH_CONTROLS
+import objects.mobile.*;
+import flixel.FlxSubState;
+#end
+
+/*
+	Custom state and substate classes. Use them instead of FlxState or FlxSubstate
+*/
+
 class MusicBeatState extends FlxUIState
 {
+	#if TOUCH_CONTROLS
+	public var pad:DoidoPad;
+	#end
+
 	override function create()
 	{
 		super.create();
@@ -25,7 +37,7 @@ class MusicBeatState extends FlxUIState
 			Paths.clearMemory();
 		
 		if(!Main.skipTrans)
-			openSubState(new GameTransition(true));
+			openSubState(new GameTransition(true, Main.lastTransition));
 
 		Iris.destroyAll();
 
@@ -33,6 +45,11 @@ class MusicBeatState extends FlxUIState
 		Main.skipStuff(false);
 		curStep = _curStep = Conductor.calcStateStep();
 		curBeat = Math.floor(curStep / 4);
+
+		#if TOUCH_CONTROLS
+		createPad("blank");
+		Controls.resetTimer();
+		#end
 	}
 
 	private var _curStep = 0; // actual curStep
@@ -91,11 +108,41 @@ class MusicBeatState extends FlxUIState
 		// finally you're useful for something
 		curBeat = Math.floor(curStep / 4);
 	}
+
+	#if TOUCH_CONTROLS
+	function createPad(mode:String = "blank", ?cameras:Array<FlxCamera>)
+	{
+		remove(pad);
+		pad = new DoidoPad(mode);
+
+		if(mode != "blank") {
+			if(cameras != null)
+				pad.cameras = cameras;
+
+			add(pad);
+		}
+	}
+
+	override function openSubState(SubState:FlxSubState) {
+		if(!(SubState is GameTransition))
+			pad.togglePad(false);
+		super.openSubState(SubState);
+	}
+
+	override function closeSubState() {
+		pad.togglePad(true);
+		super.closeSubState();
+	}
+	#end
 }
 
 class MusicBeatSubState extends FlxUISubState
 {
 	var subParent:FlxState;
+
+	#if TOUCH_CONTROLS
+	public var pad:DoidoPad = new DoidoPad();
+	#end
 
 	override function create()
 	{
@@ -106,10 +153,18 @@ class MusicBeatSubState extends FlxUISubState
 		persistentUpdate = false;
 		curStep = _curStep = Conductor.calcStateStep();
 		curBeat = Math.floor(curStep / 4);
+
+		#if TOUCH_CONTROLS
+		Controls.resetTimer();
+		#end
 	}
 	
 	override function close()
 	{
+		#if TOUCH_CONTROLS
+		Controls.resetTimer();
+		#end
+		
 		Main.activeState = subParent;
 		super.close();
 	}
@@ -165,5 +220,20 @@ class MusicBeatSubState extends FlxUISubState
 		// finally you're useful for something
 		curBeat = Math.floor(curStep / 4);
 	}
+
+	#if TOUCH_CONTROLS
+	function createPad(mode:String = "blank", ?cameras:Array<FlxCamera>)
+	{
+		remove(pad);
+		pad = new DoidoPad(mode);
+
+		if(mode != "blank") {
+			if(cameras != null)
+				pad.cameras = cameras;
+
+			add(pad);
+		}
+	}
+	#end
 }
 

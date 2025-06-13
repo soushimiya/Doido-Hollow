@@ -1,7 +1,6 @@
 package objects;
 
 import crowplexus.iris.Iris;
-import crowplexus.iris.IrisConfig;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
@@ -103,12 +102,31 @@ class Stage extends FlxGroup
 		{
 			stageScript = new Iris(Paths.script('stages/$curStage.hx'), {name: curStage, autoRun: false, autoPreset: true});
 			stageScript.interp.parent = PlayState.instance;
+			
 			stageScript.set("objects", objects);
+			stageScript.set("FlxSprite", FlxSprite);
+			stageScript.set("Paths", Paths);
+
+			stageScript.set("add", this.add);
+			stageScript.set("remove", this.remove);
+			stageScript.set("members", this.members);
+			stageScript.set("foreground", foreground);
+
+			stageScript.set("bfPos", bfPos);
+			stageScript.set("dadPos", dadPos);
+			stageScript.set("gfPos", gfPos);
+
+			stageScript.set("bfCam", bfCam);
+			stageScript.set("dadCam", dadCam);
+			stageScript.set("gfCam", gfCam);
+
+			stageScript.set("lowQuality", lowQuality);
+
 			stageScript.execute();
 		}
 		callScript("create");
 	}
-
+	
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);

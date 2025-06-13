@@ -37,7 +37,7 @@ class TitleState extends MusicBeatState
 				CoolUtil.playMusic("freakyMenu");
 			});
 			
-			var allTexts:Array<String> = CoolUtil.coolTextFile('introText');
+			var allTexts:Array<String> = CoolUtil.parseTxt('introText');
 			curWacky = allTexts[FlxG.random.int(0, allTexts.length - 1)].split('--');
 		}
 		
@@ -134,7 +134,6 @@ class TitleState extends MusicBeatState
 					addText([]);
 					
 				case 5:
-					//addText(['In association', 'with']);
 					addText(['Not associated', 'with']);
 				case 7:
 					addText(['newgrounds'], false);
@@ -149,8 +148,6 @@ class TitleState extends MusicBeatState
 					addText([curWacky[1]], false);
 				case 12:
 					addText([]);
-				
-				//case 13:
 					addText(['Friday']);
 				case 13:
 					addText(['Night'], false);
@@ -158,13 +155,13 @@ class TitleState extends MusicBeatState
 					addText(['Funkin'], false);
 				case 15:
 					addText(['Doido Engine'], false);
-
 				case 16:
 					skipIntro();
 			}
 		}
 		
 		logoBump.animation.play('bump', true);
+		
 		if(gf.animation.curAnim.name == 'danceLeft')
 			gf.animation.play('danceRight');
 		else
@@ -175,6 +172,9 @@ class TitleState extends MusicBeatState
 	{
 		if(introEnded && !force) return;
 		introEnded = true;
+		
+		if(FlxG.sound.music != null)
+			FlxG.sound.music.time = (Conductor.crochet * 16);
 		
 		addText([]);
 		ngSpr.visible = false;

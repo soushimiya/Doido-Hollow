@@ -8,12 +8,17 @@ import objects.note.Note;
 
 using StringTools;
 
+/*
+	Class that loads a chart from a SwagSong into an array of Notes
+*/
+
 class ChartLoader
 {
 	public static function getChart(SONG:SwagSong):Array<Note>
 	{
 		var unspawnNotes:Array<Note> = [];
 		var daSection:Int = 0;
+		var daSteps:Int = 0;
 		
 		// bpm change stuff for sustain notes
 		var noteCrochet:Float = Conductor.stepCrochet;
@@ -21,7 +26,7 @@ class ChartLoader
 		for(section in SONG.notes)
 		{
 			for(event in Conductor.bpmChangeMap)
-				if(event.stepTime == (daSection * 16))
+				if(event.stepTime == daSteps)
 				{
 					noteCrochet = Conductor.calcStep(event.bpm);
 					Logs.print('changed note bpm ${event.bpm}');
@@ -88,19 +93,13 @@ class ChartLoader
 						
 						unspawnNotes.push(holdNote);
 						
-						//holdNote.ID = j + 1;
-						/*holdNote.color = flixel.util.FlxColor.fromRGB(
-							FlxG.random.int(0,255),
-							FlxG.random.int(0,255),
-							FlxG.random.int(0,255)
-						);*/
-						
 						daParent = holdNote;
 						swagNote.children.push(holdNote);
 						holdID++;
 					}
 				}
 			}
+			daSteps += section.lengthInSteps;
 			daSection++;
 		}
 		

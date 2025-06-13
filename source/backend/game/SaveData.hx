@@ -6,6 +6,10 @@ import openfl.system.Capabilities;
 import backend.song.Conductor;
 import backend.song.Highscore;
 
+/*
+	Save data such as options and other things.
+*/
+
 enum SettingType
 {
 	CHECKMARK;
@@ -61,6 +65,16 @@ class SaveData
 			#end
 			CHECKMARK,
 			"Whether to use Discord's game activity.",
+		],
+		"Shaders" => [
+			true,
+			CHECKMARK,
+			"Fancy graphical effects. Disable this if you get GPU related crashes."
+		],
+		"Low Quality" => [
+			false,
+			CHECKMARK,
+			"Disables extra assets that might make very low end computers lag."
 		],
 		/*
 		*
@@ -136,20 +150,33 @@ class SaveData
 			CHECKMARK,
 			"Makes only one rating appear at a time",
 		],
-		"Ratings on HUD" => [
-			false,
-			CHECKMARK,
-			"Makes the ratings stick on the HUD"
-		],
 		"Song Timer" => [
 			true,
 			CHECKMARK,
 			"Makes the song timer visible"
 		],
-		"Shaders" => [
-			true,
-			CHECKMARK,
-			"Fancy graphical effects. Disable this if you get GPU related crashes."
+		/*
+		*
+		* MOBILE
+		* 
+		*/
+		"Invert Swipes" => [
+			"OFF",
+			SELECTOR,
+			"Inverts the direction of the swipes.",
+			["HORIZONTAL", "VERTICAL", "BOTH", "OFF"],
+		],
+		"Button Opacity" => [
+			5,
+			SELECTOR,
+			"Decides the transparency of the virtual buttons.",
+			[0, 10]
+		],
+		"Hitbox Opacity" => [
+			7,
+			SELECTOR,
+			"Decides the transparency of the playing Hitboxes.",
+			[0, 10]
 		],
 		/*
 		*
@@ -181,7 +208,7 @@ class SaveData
 		load();
 		Controls.load();
 		Highscore.load();
-		subStates.editors.ChartAutoSaveSubState.load(); // uhhh
+		subStates.editors.legacy.ChartAutoSaveSubState.load(); // uhhh
 		updateWindowSize();
 	}
 	
@@ -258,6 +285,7 @@ class SaveData
 
 	public static function updateWindowSize()
 	{
+		#if desktop
 		if(FlxG.fullscreen) return;
 		var ws:Array<String> = data.get("Window Size").split("x");
         	var windowSize:Array<Int> = [Std.parseInt(ws[0]),Std.parseInt(ws[1])];
@@ -267,5 +295,6 @@ class SaveData
 		// centering the window
 		FlxG.stage.window.x = Math.floor(Capabilities.screenResolutionX / 2 - windowSize[0] / 2);
 		FlxG.stage.window.y = Math.floor(Capabilities.screenResolutionY / 2 - (windowSize[1] + 16) / 2);
+		#end
 	}
 }

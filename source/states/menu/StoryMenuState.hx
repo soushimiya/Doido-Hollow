@@ -14,6 +14,7 @@ import flixel.tweens.FlxEase;
 import flixel.util.FlxTimer;
 import objects.menu.Alphabet;
 import subStates.menu.DeleteScoreSubState;
+import flixel.util.FlxStringUtil;
 
 class StoryMenuState extends MusicBeatState
 {
@@ -76,16 +77,19 @@ class StoryMenuState extends MusicBeatState
 		var blackMf = new FlxSprite(0, 0).makeGraphic(FlxG.width * 2, 60, 0xFF000000);
 		blackMf.screenCenter(X);
 		add(blackMf);
+
 		var yellowMf = new FlxSprite(0, 50).makeGraphic(FlxG.width * 2, 392, 0xFFF9CF51);
 		yellowMf.screenCenter(X);
 		add(yellowMf);
 		
+		#if !TOUCH_CONTROLS
 		resetTxt = new FlxText(0,0,0,"PRESS RESET TO DELETE WEEK SCORE");
 		resetTxt.setFormat(Main.gFont, 18, 0xFFFFFFFF, LEFT);
 		resetTxt.x = FlxG.width - resetTxt.width - 8;
 		resetTxt.y = FlxG.height - resetTxt.height - 8;
 		resetTxt.alpha = 0.8;
 		add(resetTxt);
+		#end
 		
 		weekScoreTxt = new FlxText(8, 8, 0,"");
 		weekScoreTxt.setFormat(Main.gFont, 36, 0xFFFFFFFF, LEFT);
@@ -123,6 +127,13 @@ class StoryMenuState extends MusicBeatState
 		}
 		
 		changeWeek();
+
+		#if TOUCH_CONTROLS
+		createPad("reset");
+
+		weekNameTxt.y = FlxG.height - weekNameTxt.height - 8;
+		weekScoreTxt.y = FlxG.height - weekScoreTxt.height - 8;
+		#end
 	}
 		
 	var canSelect:Bool = true;
@@ -163,7 +174,6 @@ class StoryMenuState extends MusicBeatState
 				
 				new FlxTimer().start(1.9, function(tmr:FlxTimer)
 				{
-					//Main.switchState(new states.MenuState());
 					var daWeek = weekList[curWeek];
 					
 					PlayState.curWeek = weekFileList[curWeek];
@@ -220,7 +230,7 @@ class StoryMenuState extends MusicBeatState
 		if(Math.abs(scoreCount[1] - scoreCount[0]) <= 0.4)
 			scoreCount[1] = scoreCount[0];
 		
-		weekScoreTxt.text = "WEEK SCORE: " + Math.floor(scoreCount[1]);
+		weekScoreTxt.text = "WEEK SCORE: " + FlxStringUtil.formatMoney(Math.floor(scoreCount[1]), false, true);
 	}
 	
 	public function updateWeekPos(lerp:Float = 0)
@@ -363,6 +373,7 @@ class StoryChar extends FlxSprite
 			default:
 				x = FlxG.width / 2 - width / 2;
 		}
+
 		// 0.8 bf
 		// 0.48 others
 		if(pos == "bf")
@@ -396,6 +407,7 @@ class StoryChar extends FlxSprite
 		offset.y += scaleOffset.y;
 	}
 }
+
 // nvm i was just sleepy
 class DiffSelector extends FlxGroup
 {

@@ -61,6 +61,10 @@ class GameOverSubState extends MusicBeatSubState
 			CoolUtil.playMusic("death/deathMusic");
 		});
 		callScript("gameOverCreatePost");
+
+		#if TOUCH_CONTROLS
+		createPad("back", [fadeCamera()]);
+		#end
 	}
 
 	function fadeCamera():FlxCamera {
@@ -109,12 +113,16 @@ class GameOverSubState extends MusicBeatSubState
 			new FlxTimer().start(2.0, function(tmr:FlxTimer)
 			{
 				Main.skipClearMemory = true;
-				Main.resetState();
+				Main.resetState('base');
 			});
 		});
 	}
 
 	function callScript(fun:String, ?args:Array<Dynamic>) {
-		PlayState.instance.callScript(fun, args);
+		try {
+			PlayState.instance.callScript(fun, args);
+		} catch(e) {
+			// avoiding the crash lol
+		}
 	}
 }

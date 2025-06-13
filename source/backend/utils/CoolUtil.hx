@@ -11,25 +11,25 @@ import flixel.util.FlxAxes;
 import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import flixel.util.FlxTimer;
+import lime.app.Application;
+import lime.ui.MouseCursor;
 import objects.note.Note;
 import subStates.menu.WebsiteSubState;
 
 using StringTools;
 
+/*
+	Random utility functions that are used by the game
+*/
+
 class CoolUtil
 {
+	/*
+	* GAME UTILS
+	*/
+
 	inline public static function displayName(song:String):String
 		return song.toUpperCase().replace("-", " ");
-	
-	public static function coolTextFile(key:String):Array<String>
-	{
-		var daList:Array<String> = Paths.text(key).split('\n');
-
-		for(i in 0...daList.length)
-			daList[i] = daList[i].trim();
-
-		return daList;
-	}
 	
 	public static function posToTimer(mil:Float = 0, hasMil:Bool = false):String
 	{
@@ -48,7 +48,6 @@ class CoolUtil
 		var disSec:String = '${sec % 60}';
 		var disMin:String = '$min';
 		disSec = forceZero(disSec);
-		//disMin = forceZero(disMin);
 		
 		if(!hasMil)
 			return '$disMin:$disSec';
@@ -73,7 +72,7 @@ class CoolUtil
 	}
 	
 	// custom camera follow because default lerp is broken :(
-	// REMINDER! despite renaming the function from "dumbCamPosLerp" to "camPosLerp" it's still dumb!
+	// REMINDER! despite renaming the function from "dumbCamPosLerp" to "camPosLerp" this function is still dumb!
 	public static function camPosLerp(cam:flixel.FlxCamera, target:flixel.FlxObject, lerp:Float = 1)
 	{
 		cam.scroll.x = FlxMath.lerp(cam.scroll.x, target.x - FlxG.width / 2, lerp);
@@ -83,9 +82,13 @@ class CoolUtil
 	public static function camZoomLerp(start:Float, target:Float = 1.0, speed:Int = 6):Float
 		return FlxMath.lerp(start, target, FlxG.elapsed * speed);
 	
-	// NOTE STUFF
+	/*
+	* NOTE UTILS
+	*/
+
+	public static var directions:Array<String> = ["left", "down", "up", "right"];
 	inline public static function getDirection(i:Int)
-		return ["left", "down", "up", "right"][i];
+		return directions[i];
 	
 	inline public static function noteWidth()
 		return 160 * 0.7; // 112
@@ -104,7 +107,10 @@ class CoolUtil
 	public static function sortByShit(Obj1:Note, Obj2:Note):Int
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.songTime, Obj2.songTime);
 
-	// music management stuff
+	/*
+	* SOUND UTILS
+	*/
+
 	public static var curMusic:String = "none";
 	public static function playMusic(?key:String, ?forceRestart:Bool = false, ?vol:Float = 0.5)
 	{
@@ -129,6 +135,19 @@ class CoolUtil
 			}
 		}
 	}
+
+	public static function playHitSound(?sound:String, ?volume:Float)
+	{
+		if(sound == null) sound = SaveData.data.get("Hitsounds");
+		if(sound == "OFF") return;
+		
+		if(volume == null) volume = SaveData.data.get("Hitsound Volume") / 100;
+		FlxG.sound.play(Paths.sound('hitsounds/${sound}'), volume);
+	}
+
+	/*
+	* STRING CONVERSION UTILS
+	*/
 
 	public static function stringToBool(str:String):Bool
 	{
@@ -235,25 +254,43 @@ class CoolUtil
 	}
 	public static function stringToColor(str:String):Int
 	{
-		if(str.startsWith('#') || str.startsWith('0x'))
-			return FlxColor.fromString(str);
-		else
-			return switch(str.toLowerCase())
-			{
-				case 'black': 	0xFF000000;
-				case 'silver':  0xFFC0C0C0;
-				case 'gray': 	0xFF808080;
-				case 'red': 	0xFFFF0000;
-				case 'purple':  0xFF800080;
-				case 'pink': 	0xFFFF00FF;
-				case 'green': 	0xFF008000;
-				case 'lime': 	0xFF00FF00;
-				case 'yellow':  0xFFFFFF00;
-				case 'blue': 	0xFF0000FF;
-				case 'aqua': 	0xFF00FFFF;
-				default: 		0xFFFFFFFF;
-			}
+		return switch(str.toLowerCase())
+		{
+			case 'black': 	0xFF000000;
+			case 'silver':  0xFFC0C0C0;
+			case 'gray': 	0xFF808080;
+			case 'red': 	0xFFFF0000;
+			case 'purple':  0xFF800080;
+			case 'pink': 	0xFFFF00FF;
+			case 'green': 	0xFF008000;
+			case 'lime': 	0xFF00FF00;
+			case 'yellow':  0xFFFFFF00;
+			case 'blue': 	0xFF0000FF;
+			case 'aqua': 	0xFF00FFFF;
+			case 'white': 	0xFFFFFFFF;
+			default: 		FlxColor.fromString(str) == null ? 0xFFFFFFFF : FlxColor.fromString(str);
+		}
 	}
+
+	/*
+	* MISC
+	*/
+
+	public static function arrayOr(a1:Array<Bool>, a2:Array<Bool>):Array<Bool>
+	{
+		var finalArray:Array<Bool> = [];
+
+		for (i in 0...a1.length)
+		{
+			finalArray.push(a1[i] || a2[i]);
+		}
+
+		return finalArray;
+	}
+
+	public static function setCursor(cursor:MouseCursor) {
+        Application.current.window.cursor = cursor;
+    }
 
 	public static function openURL(url:String)
 	{
@@ -261,16 +298,8 @@ class CoolUtil
 			Main.activeState.openSubState(new WebsiteSubState(url));
 	}
 
-	public static function playHitSound(?sound:String, ?volume:Float)
-	{
-		if(sound == null) sound = SaveData.data.get("Hitsounds");
-		if(sound == "OFF") return;
-		
-		if(volume == null) volume = SaveData.data.get("Hitsound Volume") / 100;
-		FlxG.sound.play(Paths.sound('hitsounds/${sound}'), volume);
-	}
-
-	// ONLY USE FORCED IF REALLY NEEDED
+	// Flash function to handle the Flashing Lights option
+	// Do not use forced unless you REALLY have to
 	public static function flash(?camera:FlxCamera, ?duration:Float = 0.5, ?color:FlxColor, ?forced:Bool = false)
 	{
 		if(camera == null)
@@ -280,10 +309,10 @@ class CoolUtil
 		
 		if(!forced)
 		{
-			if(SaveData.data.get("Flashing Lights") == "OFF") return;
-
-			if(SaveData.data.get("Flashing Lights") == "REDUCED")
-				color.alphaFloat = 0.4;
+			switch(SaveData.data.get("Flashing Lights").toUpperCase()) {
+				case "OFF": return;
+				case "REDUCED": color.alphaFloat = 0.4;
+			}
 		}
 		camera.flash(color, duration, null, true);
 	}
@@ -326,5 +355,16 @@ class CoolUtil
 			if(!twn.finished)
 				twn.active = apple;
 		});
+	}
+
+	// Parse data from a .txt file to an array of strings.
+	public static function parseTxt(key:String):Array<String>
+	{
+		var daList:Array<String> = Paths.text(key).split('\n');
+
+		for(i in 0...daList.length)
+			daList[i] = daList[i].trim();
+
+		return daList;
 	}
 }

@@ -49,8 +49,7 @@ class SplashNote extends FlxSprite
 				frames = Paths.getSparrowAtlas('notes/doido/splashes');
 				animation.addByPrefix("splash", '$direction splash', 24, false);
 				scale.set(0.95,0.95);
-				updateHitbox();
-			
+
 			case "pixel":
 				var frameArr:Array<Int> = [0, 1, 2, 3, 4, 5];
 				for(i in 0...frameArr.length) {
@@ -60,9 +59,8 @@ class SplashNote extends FlxSprite
 				
 				loadGraphic(Paths.image('notes/pixel/splashesPixel'), true, 33, 33);
 				for(i in 0...2)
-					animation.add('splash$i', frameArr, 24, false, (i == 1));
+					animation.add('splash$i', frameArr, 18, false, (i == 1));
 				scale.set(6,6);
-				updateHitbox();
 				isPixelSprite = true;
 				
 			default:
@@ -72,8 +70,8 @@ class SplashNote extends FlxSprite
 				animation.addByPrefix("splash2", '$direction splash 2', 24, false);
 				
 				scale.set(0.7,0.7);
-				updateHitbox();
 		}
+		updateHitbox();
 
 		if(isPixelSprite)
 			antialiasing = false;
@@ -87,20 +85,49 @@ class SplashNote extends FlxSprite
 		isPixelSprite = false;
 		switch(assetModifier)
 		{
+			case "pixel":
+				function getArr(arr:Array<Int>):Array<Int>
+				{
+					var format:Array<Int> = [];
+					for(i in 0...arr.length)
+						format[i] = (arr[i] * 4) + noteData;
+					return format;
+				}
+				var anims:Map<String, Array<Int>> = [
+					"start" => getArr([0]),
+					"loop"	=> getArr([1,2,3]),
+					"splash"=> getArr([4,5,6,7,8]),
+				];
+				loadGraphic(Paths.image('notes/pixel/holdSplashesPixel'), true, 33, 33);
+				for(anim => frameArr in anims)
+					animation.add(anim, frameArr, 18, (anim == "loop"));
+				scale.set(6,6);
+				isPixelSprite = true;
+
 			default:
-				frames = Paths.getSparrowAtlas("notes/base/holdSplashes");
-				
+				switch(assetModifier)
+				{
+					case "doido":
+						frames = Paths.getSparrowAtlas('notes/doido/holdSplashes');
+						scale.set(0.95,0.95);
+					default:
+						frames = Paths.getSparrowAtlas('notes/base/holdSplashes');
+						scale.set(0.7,0.7);
+				}
 				direction = direction.toUpperCase();
 				animation.addByPrefix("start", 	'holdCoverStart$direction', 24, false);
 				animation.addByPrefix("loop",  	'holdCover$direction', 		24, true);
 				animation.addByPrefix("splash",	'holdCoverEnd$direction', 	24, false);
 
-				for(anim in ["start", "loop", "splash"])
-					addOffset(anim, 6, -28);
-				
-				scale.set(0.7,0.7);
-				updateHitbox();
+				if(assetModifier == "doido")
+					addOffset("splash", -16, -10);
+				else
+				{
+					for(anim in ["start", "loop", "splash"])
+						addOffset(anim, 6, -28);
+				}
 		}
+		updateHitbox();
 
 		if(isPixelSprite)
 			antialiasing = false;

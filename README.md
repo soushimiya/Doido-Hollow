@@ -1,6 +1,6 @@
 # FNF: Doido Hollow
 <p align="center">
-<img src="https://www.newgrounds.com/dump/draw/27ed38c719b9761af970cac60f441e21">
+<img src="https://www.newgrounds.com/dump/draw/a7487bb1dcc15a499c00a5c5d4be5eb3">
 </p>
 
 ## About
@@ -17,3 +17,4 @@ While the base Doido is a source code focused engine, this fork focuses on soft 
 ## Todo
 - Add Script Shader supoort
 - Custom Mod List menu
+and more!

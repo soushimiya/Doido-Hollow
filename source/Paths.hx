@@ -60,7 +60,7 @@ class Paths
 			}
 			Logs.print('created new sound $key');
 			renderedSounds.set(key,
-				openfl.Assets.getSound(getPath('$key.ogg', library))
+				openfl.Assets.getSound(getPath('$key.ogg', library), false)
 			);
 		}
 		return renderedSounds.get(key);
@@ -74,7 +74,7 @@ class Paths
 		{
 			if(!renderedGraphics.exists(key))
 			{
-				var bitmap = openfl.Assets.getBitmapData(path);
+				var bitmap = openfl.Assets.getBitmapData(path, false);
 				
 				var newGraphic = FlxGraphic.fromBitmapData(bitmap, false, key, false);
 				Logs.print('created new image $key');
@@ -111,7 +111,9 @@ class Paths
 				openfl.Assets.cache.removeBitmapData(key);
 			
 			FlxG.bitmap.remove(graphic);
+			#if (flixel < "6.0.0")
 			graphic.dump();
+			#end
 			graphic.destroy();
 		}
 
@@ -127,7 +129,9 @@ class Paths
 			{
 				openfl.Assets.cache.removeBitmapData(key);
 				FlxG.bitmap._cache.remove(key);
+				#if (flixel < "6.0.0")
 				obj.dump();
+				#end
 				obj.destroy();
 			}
 		}
@@ -235,6 +239,10 @@ class Paths
 
 		return frames;
 	}
+
+	// get single frame (for now sparrow only)
+	public static function getFrame(key:String, frame:String, ?library:String):FlxGraphic
+		return FlxGraphic.fromFrame(getSparrowAtlas(key).getByName(frame));
 		
 	public static function readDir(dir:String, ?typeArr:Array<String>, ?removeType:Bool = true, ?library:String):Array<String>
 	{
@@ -245,7 +253,7 @@ class Paths
 			var rawList = sys.FileSystem.readDirectory(getPath(dir, library));
 			for(i in 0...rawList.length)
 			{
-				if(typeArr?.length > 1)
+				if(typeArr?.length > 0)
 				{
 					for(type in typeArr) {
 						if(rawList[i].endsWith(type)) {
