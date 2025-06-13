@@ -4,7 +4,6 @@ typedef CharacterJSON = {
 	var anims:Array<CharacterAnim>;
 	var globalOffset:Array<Float>;
 	var cameraOffset:Array<Float>;
-	var ratingsOffset:Array<Float>;
 	var spritesheet:String;
 	var ?extrasheets:Array<String>;
 	var ?spriteType:String;
@@ -46,7 +45,6 @@ class CharacterUtil
 			anims: [],
 			globalOffset: [0,0],
 			cameraOffset: [0,0],
-			ratingsOffset:[0,0],
 			spritesheet: "",
 			spriteType: "Sparrow",
 			flipX: false,

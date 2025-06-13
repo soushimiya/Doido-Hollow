@@ -10,17 +10,12 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
-import crowplexus.iris.Iris;
 
 using StringTools;
-//get full access to Iris for get internal Interp
-@:access(crowplexus.iris.Iris)
 
 class MainMenuState extends MusicBeatState
 {
-	var script:Iris = null;
-
-	static var optionShit:Array<String> = ["story mode", "freeplay", "donate", "credits", "options"];
+	var optionShit:Array<String> = ["story mode", "freeplay", "donate", "credits", "options"];
 	static var curSelected:Int = 0;
 	
 	var grpOptions:FlxTypedGroup<FlxSprite>;
@@ -120,14 +115,6 @@ class MainMenuState extends MusicBeatState
 		splashTxt.setBorderStyle(OUTLINE, 0xFF000000, 1.5);
 		splashTxt.y = FlxG.height - splashTxt.height - 4;
 		add(splashTxt);
-
-		if (Paths.fileExists('states/MainMenuState.hx'))
-		{
-			script = new Iris(Paths.script('states/MainMenuState.hx'), {name: "MainMenuState", autoRun: false, autoPreset: true});
-			script.interp.parent = this;
-			script.execute();
-		}
-		callScript("create");
 
 		changeSelection();
 		bg.y = bgPosY;
@@ -238,7 +225,6 @@ class MainMenuState extends MusicBeatState
 		
 		bg.y = FlxMath.lerp(bg.y, bgPosY, elapsed * 6);
 		bgMag.setPosition(bg.x, bg.y);
-		callScript("update");
 	}
 
 	public function changeSelection(change:Int = 0)
@@ -261,33 +247,5 @@ class MainMenuState extends MusicBeatState
 			item.offset.x += (item.frameWidth * item.scale.x) / 2;
 			item.offset.y += (item.frameHeight* item.scale.y) / 2;
 		}
-		callScript("changeSelection", [change]);
-	}
-
-	public function callScript(fun:String, ?args:Array<Dynamic>)
-	{
-		if (script == null)
-			return;
-		
-		var ny: Dynamic = script.interp.variables.get(fun);
-		try {
-			if(ny != null && Reflect.isFunction(ny))
-				script.call(fun, args);
-		} catch(e) {
-			Logs.print('error parsing script: ' + e, ERROR);
-		}
-	}
-
-	//Scripting Shits!!
-	override public function beatHit()
-	{
-		super.beatHit();
-		callScript("beatHit");
-	}
-
-	override public function stepHit()
-	{
-		super.stepHit();
-		callScript("stepHit");
 	}
 }

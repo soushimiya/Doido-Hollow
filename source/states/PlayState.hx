@@ -169,10 +169,6 @@ class PlayState extends MusicBeatState
 		
 		hasModchart = false;
 		validScore = true;
-
-		//old charts support
-		if (SONG.stage == null)
-			SONG.stage = "stage";
 		
 		Timings.init();
 
@@ -216,16 +212,10 @@ class PlayState extends MusicBeatState
 		// loading scripts
 		var scriptPaths:Array<String> = Paths.getScriptArray(SONG.song);
 
-		#if !sys
-		// use this to run scripts in HTML5 or other non-sys targets
-		//scriptPaths.push("songs/bopeebo/script.hx");
-		#end
-
 		for(path in scriptPaths)
 		{
-			var scriptConfig:IrisConfig = new IrisConfig(path, true, true);
+			var scriptConfig = new crowplexus.iris.IrisConfig(path, true, true);
 			var newScript:Iris = new Iris(Paths.script('$path'), scriptConfig);
-			newScript.interp.parent = this;
 			loadedScripts.push(newScript);
 		}
 

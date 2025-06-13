@@ -106,7 +106,6 @@ class Character extends FlxAnimate
 				//Offset shiits
 				globalOffset.set(jsonData.globalOffset[0], jsonData.globalOffset[1]);
 				cameraOffset.set(jsonData.cameraOffset[0], jsonData.cameraOffset[1]);
-				ratingsOffset.set(jsonData.ratingsOffset[0], jsonData.ratingsOffset[1]);
 		}
 
 		if(isPixelSprite) antialiasing = false;

@@ -23,7 +23,6 @@ import objects.Character;
 import objects.menu.DoidoSlider;
 import states.*;
 import objects.hud.HealthIcon;
-import subStates.editors.ChooserSubState;
 import subStates.editors.legacy.ChooserSubState as LegacyChooserSubState;
 
 class CharacterEditorState extends MusicBeatState
@@ -681,7 +680,6 @@ class CharacterEditorState extends MusicBeatState
 			anims: newAnimArray,
 			globalOffset: [char.globalOffset.x, char.globalOffset.y],
 			cameraOffset: [char.cameraOffset.x, char.cameraOffset.y],
-			ratingsOffset: [char.ratingsOffset.x, char.ratingsOffset.y],
 			spritesheet: ogCharJson.spritesheet,
 			//spriteType: ogCharJson.spriteType,
 			flipX: checkFlipChar.checked,

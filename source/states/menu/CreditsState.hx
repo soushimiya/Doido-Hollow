@@ -72,18 +72,10 @@ class CreditsState extends MusicBeatState
 		// yes, this implies coders aren't people
 		// :D
 		
-		// btw you dont need to credit everyone here on your mod, just credit doido engine as a whole and we're good
-		addCredit('DiogoTV', 			'diogotv', 	 0xFFC385FF, "Doido Engine's Owner and Main Coder", 				'https://bsky.app/profile/diogotv.bsky.social');
-		addCredit('teles', 				'teles', 	 0xFFFF95AC, "Doido Engine's Additional Coder",					'https://youtube.com/@telesfnf');
-		addCredit('GoldenFoxy',			'anna', 	 0xFFFFE100, "Main designer of Doido Engine's chart editor",		'https://bsky.app/profile/goldenfoxy.bsky.social');
-		addCredit('JulianoBeta', 		'juyko', 	 0xFF0BA5FF, "Composed Doido Engine's offset menu music",			'https://www.youtube.com/@prodjuyko');
-		addCredit('crowplexus',			'crowplexus',0xFF313538, "Creator of HScript Iris",							'https://github.com/crowplexus/hscript-iris');
-		addCredit('yoisabo',			'yoisabo',	 0xFF56EF19, "Chart Editor's Event Icons Artist",					'https://bsky.app/profile/yoisabo.bsky.social');
-		addCredit('cocopuffs',			'coco',	 	 0xFF56EF19, "Mobile Button Artist",								'https://x.com/cocopuffswow');
-		addCredit('doubleonikoo', 		'nikoo', 	 0xFF60458A, "didn't really do much but i already made this icon so you can stay... for now\n-DiogoTV",	'https://bsky.app/profile/doubleonikoo.bsky.social');
-		addCredit('Github Contributors','github', 	 0xFFFFFFFF, 'Thank you\n${specialCoders}!!', 		'https://github.com/DoidoTeam/FNF-Doido-Engine/graphs/contributors');
-		addCredit('Special Thanks', 	'heart', 	 0xFFC01B42, 'Thank you\n${specialPeople}!!\n<33', "https://youtu.be/Fo7L8p1I_Hw");
-		
+		// btw you dont need to credit everyone here on your mod, just credit doido engine and doido hollow as a whole and we're 
+		addCredit('Lasydrew', 			'github', 	 0xFF54E857, "Creator of Doido Hollow", 				'https://x.com/confusedbluebis');
+		addCredit('Doido Engine', 			'diogotv', 	 0xFFC385FF, "Upstream/Base Engine", 				'https://bsky.app/profile/diogotv.bsky.social');
+
 		for(i in 0...creditList.length)
 		{
 			var credit = creditList[i];
@@ -96,10 +88,6 @@ class CreditsState extends MusicBeatState
 			var icon = new FlxSprite();
 			icon.loadGraphic(Paths.image('credits/${credit.icon}'));
 			grpItems.add(icon);
-
-			// big ears
-			if(credit.icon == "anna")
-				icon.offset.y = 30;
 
 			item.icon = icon;
 			item.ID = i;

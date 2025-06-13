@@ -101,7 +101,6 @@ class Stage extends FlxGroup
 		if (Paths.fileExists('stages/$curStage.hx'))
 		{
 			stageScript = new Iris(Paths.script('stages/$curStage.hx'), {name: curStage, autoRun: false, autoPreset: true});
-			stageScript.interp.parent = PlayState.instance;
 			
 			stageScript.set("objects", objects);
 			stageScript.set("FlxSprite", FlxSprite);
@@ -119,8 +118,6 @@ class Stage extends FlxGroup
 			stageScript.set("bfCam", bfCam);
 			stageScript.set("dadCam", dadCam);
 			stageScript.set("gfCam", gfCam);
-
-			stageScript.set("lowQuality", lowQuality);
 
 			stageScript.execute();
 		}

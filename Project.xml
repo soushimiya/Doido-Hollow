@@ -29,7 +29,7 @@
 	<!-- _____________________________ Custom Defines ___________________________ -->
 
 	<define name="DISCORD_RPC" 			if="cpp" unless="mobile" />
-	<define name="PRELOAD_SONG" 		if="cpp" unless="debug" />
+	<define name="PRELOAD_SONG" 		if="windows" />
 	<define name="RENAME_UNDERSCORE" 	if="html5 || mobile"/>
 	<define name="ENABLE_PRINTING" 		if="cpp || hl || html5"/>
 	<define name="ROUND_ICON" 			if="mac"/>

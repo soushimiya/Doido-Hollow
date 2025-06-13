@@ -13,6 +13,7 @@ typedef SwagSong =
 	var player1:String;
 	var player2:String;
 
+	var ?stage:String;
 	// Parity with other engines
 	var ?gfVersion:String;
 }
@@ -161,6 +162,8 @@ class SongData
 
 		if(SONG.gfVersion == null)
 			SONG.gfVersion = "gf";
+		if(SONG.stage == null)
+			SONG.stage = "stage";
 		
 		return SONG;
 	}
